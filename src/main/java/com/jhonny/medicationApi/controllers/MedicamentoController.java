@@ -24,17 +24,12 @@ public class MedicamentoController {
 
     @GetMapping
     public List<Medicamento> getAll() {
-        return  service.getAllMedicamentos();
+        return  service.getAllMedicamentosWithCriteria();
     }
 
-    @GetMapping("/{id}")
-    public Medicamento getById(@PathVariable Long id) {
-        var medicamento = service.getMedicamentoById(id);
-        return medicamento;
-    }
 
     @PostMapping
-    public Medicamento save(@RequestBody MedicamentoDTO dto) {
+    public MedicamentoDTO save(@RequestBody MedicamentoDTO dto) {
         return service.saveMedicamento(dto);
     }
 }

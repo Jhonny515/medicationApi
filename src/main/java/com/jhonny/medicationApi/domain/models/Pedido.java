@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -26,12 +27,12 @@ import java.util.List;
 @NoArgsConstructor @AllArgsConstructor
 public class Pedido {
 
-    @Id
+    @Id @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotNull
     private Long id_cliente;
-
+    @NotNull
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_status", referencedColumnName = "id")
     private StatusPedido status;

@@ -1,16 +1,18 @@
 package com.jhonny.medicationApi.builders;
 
 import com.jhonny.medicationApi.domain.models.Medicamento;
+import com.jhonny.medicationApi.domain.models.MedicamentoInjetavel;
+import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
+import com.jhonny.medicationApi.dtos.MedicamentoInjetavelDTO;
+import com.jhonny.medicationApi.dtos.MedicamentoSobPrescricaoDTO;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 @Component
-public class MedicamentoBuilder {
+public class MedicamentoInjetavelBuilder {
 
-    public Medicamento dtoToEntity(MedicamentoDTO dto) {
-        Medicamento turnedEntity = Medicamento.builder()
+    public MedicamentoInjetavel dtoToEntity(MedicamentoDTO dto) {
+        MedicamentoInjetavel turnedEntity = MedicamentoInjetavel.builder()
                 .id(dto.getId())
                 .nome(dto.getNome())
                 .principio_ativo(dto.getPrincipio_ativo())
@@ -20,12 +22,13 @@ public class MedicamentoBuilder {
                 .preco(dto.getPreco())
                 .preco_desconto(dto.getPreco_desconto())
                 .termolabel(dto.isTermolabel())
+                .retencao((dto.getSob_prescricao().isRetencao()))
+                .tipo_aplicacao(dto.getSob_prescricao().getInjetavel().getTipoAplicacao())
                 .build();
-
         return turnedEntity;
     }
 
-    public MedicamentoDTO entityToDto(Medicamento entity) {
+    public MedicamentoDTO entityToDto(MedicamentoInjetavel entity) {
         MedicamentoDTO turnedDTO = MedicamentoDTO.builder()
                 .id(entity.getId())
                 .nome(entity.getNome())
@@ -36,8 +39,15 @@ public class MedicamentoBuilder {
                 .preco(entity.getPreco())
                 .preco_desconto(entity.getPreco_desconto())
                 .termolabel(entity.isTermolabel())
+                .sob_prescricao( new MedicamentoSobPrescricaoDTO().builder()
+                        .retencao(entity.isRetencao())
+                        .injetavel(new MedicamentoInjetavelDTO().builder()
+                                .tipoAplicacao(entity.getTipo_aplicacao())
+                                .build())
+                        .build())
                 .build();
 
         return turnedDTO;
     }
+
 }

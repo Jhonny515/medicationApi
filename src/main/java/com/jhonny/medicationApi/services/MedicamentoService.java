@@ -9,6 +9,6 @@ import java.util.List;
 @Component
 public interface MedicamentoService {
 
-    Medicamento saveMedicamento(MedicamentoDTO dto);
+    MedicamentoDTO saveMedicamento(MedicamentoDTO dto);
     List<Medicamento> getAllMedicamentosWithCriteria();
 }

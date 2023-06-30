@@ -6,45 +6,32 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "tb_medicamento")
+@Table(name = "tb_med_sob_prescricao")
 @Inheritance(strategy = InheritanceType.JOINED)
+@PrimaryKeyJoinColumn(name = "id_medicamento")
 @Getter @Setter @SuperBuilder
 @NoArgsConstructor @AllArgsConstructor
-public class Medicamento {
+public class MedicamentoSobPrescricao extends Medicamento {
 
-    @Id @NotNull
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @NotNull
-    private String nome;
-    @NotNull
-    private String principio_ativo;
-    @NotNull
-    private String descricao;
-    @NotNull
-    private String marca;
-    @NotNull
-    private String fabricante;
-    @NotNull
-    private double preco;
-    @Column(columnDefinition = "double default 0.00")
-    private double preco_desconto;
-    @NotNull
-    private boolean termolabel;
-
+    private boolean retencao;
 }

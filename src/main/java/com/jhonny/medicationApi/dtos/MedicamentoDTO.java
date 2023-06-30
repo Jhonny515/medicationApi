@@ -17,7 +17,6 @@ public class MedicamentoDTO {
     protected String fabricante;
     protected double preco;
     protected double preco_desconto;
-    protected boolean sob_prescricao;
-    protected boolean retencao;
+    protected MedicamentoSobPrescricaoDTO sob_prescricao;
     protected boolean termolabel;
 }

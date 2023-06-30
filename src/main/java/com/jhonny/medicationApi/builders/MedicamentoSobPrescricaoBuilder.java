@@ -1,16 +1,16 @@
 package com.jhonny.medicationApi.builders;
 
 import com.jhonny.medicationApi.domain.models.Medicamento;
+import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
+import com.jhonny.medicationApi.dtos.MedicamentoSobPrescricaoDTO;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 @Component
-public class MedicamentoBuilder {
+public class MedicamentoSobPrescricaoBuilder{
 
-    public Medicamento dtoToEntity(MedicamentoDTO dto) {
-        Medicamento turnedEntity = Medicamento.builder()
+    public MedicamentoSobPrescricao dtoToEntity(MedicamentoDTO dto) {
+        MedicamentoSobPrescricao turnedEntity = MedicamentoSobPrescricao.builder()
                 .id(dto.getId())
                 .nome(dto.getNome())
                 .principio_ativo(dto.getPrincipio_ativo())
@@ -20,12 +20,12 @@ public class MedicamentoBuilder {
                 .preco(dto.getPreco())
                 .preco_desconto(dto.getPreco_desconto())
                 .termolabel(dto.isTermolabel())
+                .retencao((dto.getSob_prescricao().isRetencao()))
                 .build();
-
         return turnedEntity;
     }
 
-    public MedicamentoDTO entityToDto(Medicamento entity) {
+    public MedicamentoDTO entityToDto(MedicamentoSobPrescricao entity) {
         MedicamentoDTO turnedDTO = MedicamentoDTO.builder()
                 .id(entity.getId())
                 .nome(entity.getNome())
@@ -36,6 +36,8 @@ public class MedicamentoBuilder {
                 .preco(entity.getPreco())
                 .preco_desconto(entity.getPreco_desconto())
                 .termolabel(entity.isTermolabel())
+                .sob_prescricao( new MedicamentoSobPrescricaoDTO().builder()
+                        .retencao(entity.isRetencao()).build())
                 .build();
 
         return turnedDTO;
