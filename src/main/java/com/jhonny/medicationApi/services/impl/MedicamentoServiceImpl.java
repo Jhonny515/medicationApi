@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -56,8 +58,33 @@ public class MedicamentoServiceImpl implements MedicamentoService {
     @Override
     public List<MedicamentoDTO> getMedicamentosWithCriteria(MedicamentoDTO dto) {
         List<MedicamentoDTO> responseDTO = medicamentoRepository.findAllWithCriteria(dto)
-                .stream().map(medicamentoBuilder::entityToDto).collect(Collectors.toList());
+                .stream().map((medicamento) -> {
+                    if (medicamento instanceof MedicamentoInjetavel) {
+                        return medicamentoInjetavelBuilder.entityToDto((MedicamentoInjetavel) medicamento);
+                    }
+                    if (medicamento instanceof MedicamentoSobPrescricao) {
+                        return medicamentoSobPrescricaoBuilder.entityToDto((MedicamentoSobPrescricao) medicamento);
+                    }
+                    else {
+                        return medicamentoBuilder.entityToDto(medicamento);
+                    }
+                }).collect(Collectors.toList());
         return responseDTO;
     }
 
+//    private Boolean objectHasProperty(Object obj, String propertyName){
+//        List<Field> properties = getAllFields(obj);
+//        for(Field field : properties){
+//            if(field.getName().equalsIgnoreCase(propertyName)){
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    private static List<Field> getAllFields(Object obj){
+//        List<Field> fields = new ArrayList<Field>();
+//        obj instanceof  ? (() obj) : null;
+//        return fields;
+//    }
 }

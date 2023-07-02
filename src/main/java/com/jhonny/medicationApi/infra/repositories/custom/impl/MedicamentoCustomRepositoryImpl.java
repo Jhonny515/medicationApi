@@ -48,6 +48,14 @@ public class MedicamentoCustomRepositoryImpl extends CriteriaParent<Medicamento,
             if (Objects.nonNull(paramDTO.isTermolabel())) {
                 predicates.add(cb.equal(root.get("termolabel"), paramDTO.isTermolabel()));
             }
+            if (Objects.nonNull(paramDTO.getSob_prescricao())){
+                if (Objects.nonNull(paramDTO.getSob_prescricao().isRetencao())){
+                    predicates.add(cb.equal(root.get("retencao"), paramDTO.getSob_prescricao().isRetencao()));
+                }
+                if (Objects.nonNull(paramDTO.getSob_prescricao().getInjetavel()) && Objects.nonNull(paramDTO.getSob_prescricao().getInjetavel().getTipoAplicacao())) {
+                    predicates.add(cb.like(cb.lower(root.get("tipo_aplicacao")), "%" + paramDTO.getSob_prescricao().getInjetavel().getTipoAplicacao().toString().toLowerCase() + "%"));
+                }
+            }
         }
     }
 }
