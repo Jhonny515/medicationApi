@@ -14,17 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("medicamentos")
 public class MedicamentoController {
 
+    @Autowired
     private MedicamentoService service;
 
-    @GetMapping
-    public List<Medicamento> getAll() {
-        return  service.getAllMedicamentosWithCriteria();
+    @GetMapping("/search")
+    public List<MedicamentoDTO> getWithCriteria(MedicamentoDTO dto) {
+        return  service.getMedicamentosWithCriteria(dto);
     }
 
 

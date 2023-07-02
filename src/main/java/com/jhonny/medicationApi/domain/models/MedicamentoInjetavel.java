@@ -13,6 +13,8 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -30,6 +32,6 @@ import java.io.Serializable;
 @NoArgsConstructor @AllArgsConstructor
 public class MedicamentoInjetavel extends MedicamentoSobPrescricao {
 
-    @NotNull
+    @NotNull @Enumerated(EnumType.STRING)
     private TipoAplicacao tipo_aplicacao;
 }

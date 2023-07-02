@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class MedicamentoServiceImpl implements MedicamentoService {
@@ -53,8 +54,10 @@ public class MedicamentoServiceImpl implements MedicamentoService {
     }
 
     @Override
-    public List<Medicamento> getAllMedicamentosWithCriteria() {
-        return medicamentoRepository.findAll();
+    public List<MedicamentoDTO> getMedicamentosWithCriteria(MedicamentoDTO dto) {
+        List<MedicamentoDTO> responseDTO = medicamentoRepository.findAllWithCriteria(dto)
+                .stream().map(medicamentoBuilder::entityToDto).collect(Collectors.toList());
+        return responseDTO;
     }
 
 }
