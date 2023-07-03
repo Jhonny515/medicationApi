@@ -7,6 +7,7 @@ import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.domain.models.MedicamentoInjetavel;
 import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
+import com.jhonny.medicationApi.dtos.search.MedicamentoSearchInputDTO;
 import com.jhonny.medicationApi.infra.repositories.MedicamentoInjetavelRepository;
 import com.jhonny.medicationApi.infra.repositories.MedicamentoRepository;
 import com.jhonny.medicationApi.infra.repositories.MedicamentoSobPrescricaoRepository;
@@ -56,7 +57,7 @@ public class MedicamentoServiceImpl implements MedicamentoService {
     }
 
     @Override
-    public List<MedicamentoDTO> getMedicamentosWithCriteria(MedicamentoDTO dto) {
+    public List<MedicamentoDTO> getMedicamentosWithCriteria(MedicamentoSearchInputDTO dto) {
         List<MedicamentoDTO> responseDTO = medicamentoRepository.findAllWithCriteria(dto)
                 .stream().map((medicamento) -> {
                     if (medicamento instanceof MedicamentoInjetavel) {
@@ -72,19 +73,4 @@ public class MedicamentoServiceImpl implements MedicamentoService {
         return responseDTO;
     }
 
-//    private Boolean objectHasProperty(Object obj, String propertyName){
-//        List<Field> properties = getAllFields(obj);
-//        for(Field field : properties){
-//            if(field.getName().equalsIgnoreCase(propertyName)){
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-//
-//    private static List<Field> getAllFields(Object obj){
-//        List<Field> fields = new ArrayList<Field>();
-//        obj instanceof  ? (() obj) : null;
-//        return fields;
-//    }
 }

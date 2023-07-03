@@ -2,6 +2,7 @@ package com.jhonny.medicationApi.controllers;
 
 import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
+import com.jhonny.medicationApi.dtos.search.MedicamentoSearchInputDTO;
 import com.jhonny.medicationApi.services.MedicamentoService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class MedicamentoController {
     private MedicamentoService service;
 
     @GetMapping("/search")
-    public List<MedicamentoDTO> getWithCriteria(MedicamentoDTO dto) {
+    public List<MedicamentoDTO> getWithCriteria(MedicamentoSearchInputDTO dto) {
         return  service.getMedicamentosWithCriteria(dto);
     }
 

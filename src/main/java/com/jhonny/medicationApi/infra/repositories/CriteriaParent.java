@@ -12,6 +12,7 @@ import javax.persistence.criteria.Root;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class CriteriaParent<E, D> {
     @PersistenceContext
@@ -28,7 +29,7 @@ public abstract class CriteriaParent<E, D> {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        filterAtributesFromEntity(paramDTO, cb, root, predicates);
+        filterAtributesFromEntity(paramDTO, cb, root, predicates, query);
         if(!predicates.isEmpty()) {
             query.where(predicates.toArray(Predicate[]::new));
         }
@@ -36,5 +37,5 @@ public abstract class CriteriaParent<E, D> {
         return queryResult.getResultList();
     }
 
-    protected abstract void filterAtributesFromEntity(D paramDTO, CriteriaBuilder cb, Root<E> root, List<Predicate> predicates);
+    protected abstract void filterAtributesFromEntity(D paramDTO, CriteriaBuilder cb, Root<E> root, List<Predicate> predicates, CriteriaQuery<E> query);
 }

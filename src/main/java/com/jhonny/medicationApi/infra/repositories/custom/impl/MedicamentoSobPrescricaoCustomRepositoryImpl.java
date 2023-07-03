@@ -6,14 +6,15 @@ import com.jhonny.medicationApi.infra.repositories.CriteriaParent;
 import com.jhonny.medicationApi.infra.repositories.custom.MedicamentoSobPrescricaoCustomRepository;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Objects;
 
-public class MedicamentoSobPrescricaoCustomRepositoryImpl extends CriteriaParent<MedicamentoSobPrescricao, MedicamentoDTO> implements MedicamentoSobPrescricaoCustomRepository {
+public abstract class MedicamentoSobPrescricaoCustomRepositoryImpl extends CriteriaParent<MedicamentoSobPrescricao, MedicamentoDTO> implements MedicamentoSobPrescricaoCustomRepository {
     @Override
-    protected void filterAtributesFromEntity(MedicamentoDTO paramDTO, CriteriaBuilder cb, Root<MedicamentoSobPrescricao> root, List<Predicate> predicates) {
+    protected void filterAtributesFromEntity(MedicamentoDTO paramDTO, CriteriaBuilder cb, Root<MedicamentoSobPrescricao> root, List<Predicate> predicates, CriteriaQuery<MedicamentoSobPrescricao> query) {
         if (Objects.nonNull(paramDTO)){
             if (Objects.nonNull(paramDTO.getId())) {
                 predicates.add(cb.equal(root.get("id"), paramDTO.getId()));
