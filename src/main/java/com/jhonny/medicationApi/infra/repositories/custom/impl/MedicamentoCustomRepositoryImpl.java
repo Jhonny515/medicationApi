@@ -54,27 +54,28 @@ public class MedicamentoCustomRepositoryImpl extends CriteriaParent<Medicamento,
             }
             Subquery<Long> subquery = query.subquery(Long.class);
             Root<MedicamentoSobPrescricao> sobPrescricaoRoot = subquery.from(MedicamentoSobPrescricao.class);
-            if (!Objects.nonNull(paramDTO.getSobPrescricao()) || paramDTO.getSobPrescricao() == true){
+            if (Objects.isNull(paramDTO.getSobPrescricao()) || paramDTO.getSobPrescricao()){
                     if (Objects.nonNull(paramDTO.getRetencao())){
                         subquery.select(sobPrescricaoRoot.get("id")).where(cb.equal(sobPrescricaoRoot.get("retencao"), paramDTO.getRetencao()));
                         predicates.add(cb.in(root.get("id")).value(subquery));
-                    } else if (paramDTO.getSobPrescricao() == true){
+                    } else if (Boolean.TRUE.equals(paramDTO.getSobPrescricao())){
                         subquery.select(sobPrescricaoRoot.get("id"));
                         predicates.add(cb.in(root.get("id")).value(subquery));
                     }
-                if (!Objects.nonNull(paramDTO.getInjetavel()) || paramDTO.getInjetavel()==true) {
-                        Root<MedicamentoInjetavel> injetavelRoot = subquery.from(MedicamentoInjetavel.class);
+
+                    Root<MedicamentoInjetavel> injetavelRoot = subquery.from(MedicamentoInjetavel.class);
+                    if (Objects.isNull(paramDTO.getInjetavel()) || paramDTO.getInjetavel()) {
                     if (Objects.nonNull(paramDTO.getTipoAplicacao())) {
                         subquery.select(injetavelRoot.get("id")).where(cb.like(cb.lower(injetavelRoot.get("tipo_aplicacao")), "%" + paramDTO.getTipoAplicacao().toString().toLowerCase() + "%"));
                         predicates.add(cb.in(root.get("id")).value(subquery));
-                    } else if (paramDTO.getInjetavel()==true) {
+                    } else if (Boolean.TRUE.equals(paramDTO.getInjetavel())) {
                         subquery.select(injetavelRoot.get("id"));
                         predicates.add(cb.in(root.get("id")).value(subquery));
+                    }
                     } else {
-                        subquery.select(sobPrescricaoRoot.get("id"));
+                        subquery.select(injetavelRoot.get("id"));
                         predicates.add(cb.not(cb.in(root.get("id")).value(subquery)));
                     }
-                }
             } else {
                 subquery.select(sobPrescricaoRoot.get("id"));
                 predicates.add(cb.not(cb.in(root.get("id")).value(subquery)));
