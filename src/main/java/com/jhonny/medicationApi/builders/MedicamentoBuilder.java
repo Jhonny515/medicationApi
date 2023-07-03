@@ -2,6 +2,7 @@ package com.jhonny.medicationApi.builders;
 
 import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
+import com.jhonny.medicationApi.dtos.inputs.MedicamentoInputDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -19,7 +20,7 @@ public class MedicamentoBuilder {
                 .fabricante(dto.getFabricante())
                 .preco(dto.getPreco())
                 .preco_desconto(dto.getPreco_desconto())
-                .termolabel(dto.isTermolabel())
+                .termolabel(dto.getTermolabel())
                 .build();
 
         return turnedEntity;
@@ -39,5 +40,21 @@ public class MedicamentoBuilder {
                 .build();
 
         return turnedDTO;
+    }
+
+    public Medicamento dtoToEntity(MedicamentoInputDTO dto, Medicamento entity) {
+        entity = Medicamento.builder()
+                .id(entity.getId())
+                .nome(dto.getNome()==null? entity.getNome() : dto.getNome())
+                .principio_ativo(dto.getPrincipio_ativo()==null? entity.getPrincipio_ativo() : dto.getPrincipio_ativo())
+                .descricao(dto.getDescricao()==null? entity.getDescricao() : dto.getDescricao())
+                .marca(dto.getMarca()==null? entity.getMarca() : dto.getMarca())
+                .fabricante(dto.getFabricante()==null? entity.getFabricante() : dto.getFabricante())
+                .preco(dto.getPreco()==null? entity.getPreco() : dto.getPreco())
+                .preco_desconto(dto.getPreco_desconto()==null? entity.getPreco_desconto() : dto.getPreco_desconto())
+                .termolabel(dto.getTermolabel() == null? entity.isTermolabel() : dto.getTermolabel())
+                .build();
+
+        return entity;
     }
 }

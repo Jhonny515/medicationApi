@@ -11,5 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor @AllArgsConstructor
 public class MedicamentoInjetavelDTO {
 
-    protected TipoAplicacao tipoAplicacao;
+    protected String tipoAplicacao;
 }

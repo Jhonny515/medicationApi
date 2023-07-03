@@ -7,17 +7,14 @@ import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.domain.models.MedicamentoInjetavel;
 import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
-import com.jhonny.medicationApi.dtos.search.MedicamentoSearchInputDTO;
+import com.jhonny.medicationApi.dtos.inputs.MedicamentoInputDTO;
 import com.jhonny.medicationApi.infra.repositories.MedicamentoInjetavelRepository;
 import com.jhonny.medicationApi.infra.repositories.MedicamentoRepository;
 import com.jhonny.medicationApi.infra.repositories.MedicamentoSobPrescricaoRepository;
 import com.jhonny.medicationApi.services.MedicamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -57,7 +54,7 @@ public class MedicamentoServiceImpl implements MedicamentoService {
     }
 
     @Override
-    public List<MedicamentoDTO> getMedicamentosWithCriteria(MedicamentoSearchInputDTO dto) {
+    public List<MedicamentoDTO> getMedicamentosWithCriteria(MedicamentoInputDTO dto) {
         List<MedicamentoDTO> responseDTO = medicamentoRepository.findAllWithCriteria(dto)
                 .stream().map((medicamento) -> {
                     if (medicamento instanceof MedicamentoInjetavel) {
@@ -73,4 +70,25 @@ public class MedicamentoServiceImpl implements MedicamentoService {
         return responseDTO;
     }
 
+    @Override
+    public MedicamentoDTO updateMedicamento(MedicamentoInputDTO dto) {
+        Medicamento medicamentoToUpdate;
+        if (dto.getId() == null) {
+            System.err.println("ID não pode estar nulo para atualização do medicamento.");
+            return null; // TODO: Tratamento de Exceção
+        } else {
+            medicamentoToUpdate = medicamentoRepository.findById(dto.getId()).orElseThrow(); // TODO: Tratamento de Exceção
+        }
+
+        if ((Objects.nonNull(dto.getInjetavel()) && dto.getInjetavel()) || Objects.nonNull(dto.getTipoAplicacao())) {
+            MedicamentoInjetavel responseEntity = medicamentoInjetavelRepository.save(medicamentoInjetavelBuilder.dtoToEntity(dto, (MedicamentoInjetavel) medicamentoToUpdate));
+            return medicamentoInjetavelBuilder.entityToDto(responseEntity);
+        } else if ((Objects.nonNull(dto.getSobPrescricao()) &&  dto.getSobPrescricao()) || Objects.nonNull(dto.getRetencao())) {
+            MedicamentoSobPrescricao responseEntity = medicamentoSobPrescricaoRepository.save( medicamentoSobPrescricaoBuilder.dtoToEntity(dto, (MedicamentoSobPrescricao) medicamentoToUpdate));
+            return medicamentoSobPrescricaoBuilder.entityToDto(responseEntity);
+        } else {
+            Medicamento responseEntity =  medicamentoRepository.save(medicamentoBuilder.dtoToEntity(dto, medicamentoToUpdate));
+            return medicamentoBuilder.entityToDto(responseEntity);
+        }
+    }
 }

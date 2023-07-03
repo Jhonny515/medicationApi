@@ -1,12 +1,11 @@
 package com.jhonny.medicationApi.infra.repositories.custom;
 
 import com.jhonny.medicationApi.domain.models.Medicamento;
-import com.jhonny.medicationApi.dtos.MedicamentoDTO;
-import com.jhonny.medicationApi.dtos.search.MedicamentoSearchInputDTO;
+import com.jhonny.medicationApi.dtos.inputs.MedicamentoInputDTO;
 
 import java.util.List;
 
 public interface MedicamentoCustomRepository {
 
-    List<Medicamento> findAllWithCriteria(MedicamentoSearchInputDTO dto);
+    List<Medicamento> findAllWithCriteria(MedicamentoInputDTO dto);
 }

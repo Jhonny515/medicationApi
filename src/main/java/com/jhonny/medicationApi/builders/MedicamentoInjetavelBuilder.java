@@ -1,11 +1,13 @@
 package com.jhonny.medicationApi.builders;
 
+import com.jhonny.medicationApi.domain.enums.TipoAplicacao;
 import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.domain.models.MedicamentoInjetavel;
 import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
 import com.jhonny.medicationApi.dtos.MedicamentoInjetavelDTO;
 import com.jhonny.medicationApi.dtos.MedicamentoSobPrescricaoDTO;
+import com.jhonny.medicationApi.dtos.inputs.MedicamentoInputDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,9 +23,9 @@ public class MedicamentoInjetavelBuilder {
                 .fabricante(dto.getFabricante())
                 .preco(dto.getPreco())
                 .preco_desconto(dto.getPreco_desconto())
-                .termolabel(dto.isTermolabel())
-                .retencao((dto.getSob_prescricao().isRetencao()))
-                .tipo_aplicacao(dto.getSob_prescricao().getInjetavel().getTipoAplicacao())
+                .termolabel(dto.getTermolabel())
+                .retencao((dto.getSob_prescricao().getRetencao()))
+                .tipo_aplicacao(TipoAplicacao.valueOf(dto.getSob_prescricao().getInjetavel().getTipoAplicacao()))
                 .build();
         return turnedEntity;
     }
@@ -42,7 +44,7 @@ public class MedicamentoInjetavelBuilder {
                 .sob_prescricao( new MedicamentoSobPrescricaoDTO().builder()
                         .retencao(entity.isRetencao())
                         .injetavel(new MedicamentoInjetavelDTO().builder()
-                                .tipoAplicacao(entity.getTipo_aplicacao())
+                                .tipoAplicacao(entity.getTipo_aplicacao().toString())
                                 .build())
                         .build())
                 .build();
@@ -50,4 +52,21 @@ public class MedicamentoInjetavelBuilder {
         return turnedDTO;
     }
 
+    public MedicamentoInjetavel dtoToEntity(MedicamentoInputDTO dto, MedicamentoInjetavel entity) {
+        entity = MedicamentoInjetavel.builder()
+                .id(entity.getId())
+                .nome(dto.getNome()==null? entity.getNome() : dto.getNome())
+                .principio_ativo(dto.getPrincipio_ativo()==null? entity.getPrincipio_ativo() : dto.getPrincipio_ativo())
+                .descricao(dto.getDescricao()==null? entity.getDescricao() : dto.getDescricao())
+                .marca(dto.getMarca()==null? entity.getMarca() : dto.getMarca())
+                .fabricante(dto.getFabricante()==null? entity.getFabricante() : dto.getFabricante())
+                .preco(dto.getPreco()==null? entity.getPreco() : dto.getPreco())
+                .preco_desconto(dto.getPreco_desconto()==null? entity.getPreco_desconto() : dto.getPreco_desconto())
+                .termolabel(dto.getTermolabel() == null? entity.isTermolabel() : dto.getTermolabel())
+                .retencao(dto.getRetencao() == null? entity.isRetencao() : dto.getRetencao())
+                .tipo_aplicacao(dto.getTipoAplicacao()==null? entity.getTipo_aplicacao() : dto.getTipoAplicacao())
+                .build();
+
+        return entity;
+    }
 }

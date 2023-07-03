@@ -1,37 +1,31 @@
 package com.jhonny.medicationApi.infra.repositories.custom.impl;
 
 
-import com.jhonny.medicationApi.domain.enums.TipoAplicacao;
 import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.domain.models.MedicamentoInjetavel;
 import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
-import com.jhonny.medicationApi.dtos.MedicamentoDTO;
-import com.jhonny.medicationApi.dtos.search.MedicamentoSearchInputDTO;
+import com.jhonny.medicationApi.dtos.inputs.MedicamentoInputDTO;
 import com.jhonny.medicationApi.infra.repositories.CriteriaParent;
 import com.jhonny.medicationApi.infra.repositories.custom.MedicamentoCustomRepository;
-import org.springframework.data.domain.Page;
 
-import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
-public class MedicamentoCustomRepositoryImpl extends CriteriaParent<Medicamento, MedicamentoSearchInputDTO> implements MedicamentoCustomRepository {
+public class MedicamentoCustomRepositoryImpl extends CriteriaParent<Medicamento, MedicamentoInputDTO> implements MedicamentoCustomRepository {
 
 
     @Override
-    public List<Medicamento> findAllWithCriteria(MedicamentoSearchInputDTO dto) {
+    public List<Medicamento> findAllWithCriteria(MedicamentoInputDTO dto) {
         return super.findAllWithCriteriaParent(dto);
     }
 
     @Override
-    protected void filterAtributesFromEntity(MedicamentoSearchInputDTO paramDTO,
+    protected void filterAtributesFromEntity(MedicamentoInputDTO paramDTO,
                                              CriteriaBuilder cb,
                                              Root<Medicamento> root,
                                              List<Predicate> predicates,

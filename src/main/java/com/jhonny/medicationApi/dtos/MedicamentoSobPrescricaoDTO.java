@@ -10,6 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor @AllArgsConstructor
 public class MedicamentoSobPrescricaoDTO {
 
-    protected boolean retencao;
+    protected Boolean retencao;
     protected MedicamentoInjetavelDTO injetavel;
 }

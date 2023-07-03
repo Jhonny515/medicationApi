@@ -4,6 +4,7 @@ import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
 import com.jhonny.medicationApi.dtos.MedicamentoSobPrescricaoDTO;
+import com.jhonny.medicationApi.dtos.inputs.MedicamentoInputDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,8 +20,8 @@ public class MedicamentoSobPrescricaoBuilder{
                 .fabricante(dto.getFabricante())
                 .preco(dto.getPreco())
                 .preco_desconto(dto.getPreco_desconto())
-                .termolabel(dto.isTermolabel())
-                .retencao((dto.getSob_prescricao().isRetencao()))
+                .termolabel(dto.getTermolabel())
+                .retencao((dto.getSob_prescricao().getRetencao()))
                 .build();
         return turnedEntity;
     }
@@ -41,5 +42,22 @@ public class MedicamentoSobPrescricaoBuilder{
                 .build();
 
         return turnedDTO;
+    }
+
+    public MedicamentoSobPrescricao dtoToEntity(MedicamentoInputDTO dto, MedicamentoSobPrescricao entity) {
+        entity = MedicamentoSobPrescricao.builder()
+                .id(entity.getId())
+                .nome(dto.getNome()==null? entity.getNome() : dto.getNome())
+                .principio_ativo(dto.getPrincipio_ativo()==null? entity.getPrincipio_ativo() : dto.getPrincipio_ativo())
+                .descricao(dto.getDescricao()==null? entity.getDescricao() : dto.getDescricao())
+                .marca(dto.getMarca()==null? entity.getMarca() : dto.getMarca())
+                .fabricante(dto.getFabricante()==null? entity.getFabricante() : dto.getFabricante())
+                .preco(dto.getPreco()==null? entity.getPreco() : dto.getPreco())
+                .preco_desconto(dto.getPreco_desconto()==null? entity.getPreco_desconto() : dto.getPreco_desconto())
+                .termolabel(dto.getTermolabel() == null? entity.isTermolabel() : dto.getTermolabel())
+                .retencao(dto.getRetencao() == null? entity.isRetencao() : dto.getRetencao())
+                .build();
+
+        return entity;
     }
 }
