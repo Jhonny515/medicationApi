@@ -12,4 +12,5 @@ public interface MedicamentoService {
     MedicamentoDTO saveMedicamento(MedicamentoDTO dto);
     List<MedicamentoDTO> getMedicamentosWithCriteria(MedicamentoInputDTO dto);
     MedicamentoDTO updateMedicamento(MedicamentoInputDTO dto);
+    MedicamentoDTO deleteMedicamento(Long id);
 }

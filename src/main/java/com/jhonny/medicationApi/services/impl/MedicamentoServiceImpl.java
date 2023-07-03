@@ -91,4 +91,19 @@ public class MedicamentoServiceImpl implements MedicamentoService {
             return medicamentoBuilder.entityToDto(responseEntity);
         }
     }
+
+    @Override
+    public MedicamentoDTO deleteMedicamento(Long id) {
+        Medicamento medicamentoToDelete = medicamentoRepository.findById(id).orElseThrow();
+        medicamentoRepository.deleteById(id);
+        if (medicamentoToDelete instanceof MedicamentoInjetavel) {
+            return medicamentoInjetavelBuilder.entityToDto((MedicamentoInjetavel) medicamentoToDelete);
+        }
+        if (medicamentoToDelete instanceof MedicamentoSobPrescricao) {
+            return medicamentoSobPrescricaoBuilder.entityToDto((MedicamentoSobPrescricao) medicamentoToDelete);
+        }
+        else {
+            return medicamentoBuilder.entityToDto(medicamentoToDelete);
+        }
+    }
 }
