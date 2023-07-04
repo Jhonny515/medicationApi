@@ -1,7 +1,5 @@
 package com.jhonny.medicationApi.infra.repositories;
 
-import org.springframework.data.domain.Page;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -12,7 +10,6 @@ import javax.persistence.criteria.Root;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public abstract class CriteriaParent<E, D> {
     @PersistenceContext
@@ -22,7 +19,7 @@ public abstract class CriteriaParent<E, D> {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         final ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
-        Class<E> classType = (Class<E>) (type).getActualTypeArguments()[0]; // TODO: Wow
+        @SuppressWarnings("unchecked") Class<E> classType = (Class<E>) (type).getActualTypeArguments()[0]; // TODO: Wow
 
         CriteriaQuery<E> query = cb.createQuery(classType);
         Root<E> root = query.from(classType);

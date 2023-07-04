@@ -1,6 +1,5 @@
 package com.jhonny.medicationApi.dtos;
 
-import com.jhonny.medicationApi.domain.enums.TipoAplicacao;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

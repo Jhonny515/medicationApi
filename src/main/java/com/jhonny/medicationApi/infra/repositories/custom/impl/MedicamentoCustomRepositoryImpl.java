@@ -4,7 +4,7 @@ package com.jhonny.medicationApi.infra.repositories.custom.impl;
 import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.domain.models.MedicamentoInjetavel;
 import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
-import com.jhonny.medicationApi.dtos.inputs.MedicamentoInputDTO;
+import com.jhonny.medicationApi.dtos.inputs.MedicamentoSearchInputDTO;
 import com.jhonny.medicationApi.infra.repositories.CriteriaParent;
 import com.jhonny.medicationApi.infra.repositories.custom.MedicamentoCustomRepository;
 
@@ -16,16 +16,16 @@ import javax.persistence.criteria.Subquery;
 import java.util.List;
 import java.util.Objects;
 
-public class MedicamentoCustomRepositoryImpl extends CriteriaParent<Medicamento, MedicamentoInputDTO> implements MedicamentoCustomRepository {
+public class MedicamentoCustomRepositoryImpl extends CriteriaParent<Medicamento, MedicamentoSearchInputDTO> implements MedicamentoCustomRepository {
 
 
     @Override
-    public List<Medicamento> findAllWithCriteria(MedicamentoInputDTO dto) {
+    public List<Medicamento> findAllWithCriteria(MedicamentoSearchInputDTO dto) {
         return super.findAllWithCriteriaParent(dto);
     }
 
     @Override
-    protected void filterAtributesFromEntity(MedicamentoInputDTO paramDTO,
+    protected void filterAtributesFromEntity(MedicamentoSearchInputDTO paramDTO,
                                              CriteriaBuilder cb,
                                              Root<Medicamento> root,
                                              List<Predicate> predicates,
@@ -79,6 +79,22 @@ public class MedicamentoCustomRepositoryImpl extends CriteriaParent<Medicamento,
             } else {
                 subquery.select(sobPrescricaoRoot.get("id"));
                 predicates.add(cb.not(cb.in(root.get("id")).value(subquery)));
+            }
+
+            // Sorting
+
+            if (Objects.nonNull(paramDTO.getOrderBy()) && Objects.nonNull(paramDTO.getOrder())) {
+                query.orderBy(
+                        paramDTO.getOrder().toLowerCase().equals("asc") ?
+                                cb.asc(root.get(paramDTO.getOrderBy())) :
+                                cb.desc(root.get(paramDTO.getOrderBy()))
+                );
+            }
+            if (Objects.nonNull(paramDTO.getHigherThan())) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("preco_desconto"), paramDTO.getHigherThan()));
+            }
+            if (Objects.nonNull(paramDTO.getLowerThan())) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("preco_desconto"), paramDTO.getLowerThan()));
             }
         }
     }

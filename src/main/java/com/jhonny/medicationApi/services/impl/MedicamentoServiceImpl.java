@@ -8,6 +8,7 @@ import com.jhonny.medicationApi.domain.models.MedicamentoInjetavel;
 import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
 import com.jhonny.medicationApi.dtos.inputs.MedicamentoInputDTO;
+import com.jhonny.medicationApi.dtos.inputs.MedicamentoSearchInputDTO;
 import com.jhonny.medicationApi.infra.repositories.MedicamentoInjetavelRepository;
 import com.jhonny.medicationApi.infra.repositories.MedicamentoRepository;
 import com.jhonny.medicationApi.infra.repositories.MedicamentoSobPrescricaoRepository;
@@ -54,7 +55,7 @@ public class MedicamentoServiceImpl implements MedicamentoService {
     }
 
     @Override
-    public List<MedicamentoDTO> getMedicamentosWithCriteria(MedicamentoInputDTO dto) {
+    public List<MedicamentoDTO> getMedicamentosWithCriteria(MedicamentoSearchInputDTO dto) {
         List<MedicamentoDTO> responseDTO = medicamentoRepository.findAllWithCriteria(dto)
                 .stream().map((medicamento) -> {
                     if (medicamento instanceof MedicamentoInjetavel) {
@@ -67,6 +68,8 @@ public class MedicamentoServiceImpl implements MedicamentoService {
                         return medicamentoBuilder.entityToDto(medicamento);
                     }
                 }).collect(Collectors.toList());
+
+
         return responseDTO;
     }
 
@@ -81,13 +84,13 @@ public class MedicamentoServiceImpl implements MedicamentoService {
         }
 
         if ((Objects.nonNull(dto.getInjetavel()) && dto.getInjetavel()) || Objects.nonNull(dto.getTipoAplicacao())) {
-            MedicamentoInjetavel responseEntity = medicamentoInjetavelRepository.save(medicamentoInjetavelBuilder.dtoToEntity(dto, (MedicamentoInjetavel) medicamentoToUpdate));
+            MedicamentoInjetavel responseEntity = medicamentoInjetavelRepository.save(medicamentoInjetavelBuilder.dtoToEntity((MedicamentoSearchInputDTO) dto, (MedicamentoInjetavel) medicamentoToUpdate));
             return medicamentoInjetavelBuilder.entityToDto(responseEntity);
         } else if ((Objects.nonNull(dto.getSobPrescricao()) &&  dto.getSobPrescricao()) || Objects.nonNull(dto.getRetencao())) {
-            MedicamentoSobPrescricao responseEntity = medicamentoSobPrescricaoRepository.save( medicamentoSobPrescricaoBuilder.dtoToEntity(dto, (MedicamentoSobPrescricao) medicamentoToUpdate));
+            MedicamentoSobPrescricao responseEntity = medicamentoSobPrescricaoRepository.save( medicamentoSobPrescricaoBuilder.dtoToEntity((MedicamentoSearchInputDTO) dto, (MedicamentoSobPrescricao) medicamentoToUpdate));
             return medicamentoSobPrescricaoBuilder.entityToDto(responseEntity);
         } else {
-            Medicamento responseEntity =  medicamentoRepository.save(medicamentoBuilder.dtoToEntity(dto, medicamentoToUpdate));
+            Medicamento responseEntity =  medicamentoRepository.save(medicamentoBuilder.dtoToEntity((MedicamentoSearchInputDTO) dto, medicamentoToUpdate));
             return medicamentoBuilder.entityToDto(responseEntity);
         }
     }

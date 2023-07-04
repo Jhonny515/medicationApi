@@ -2,12 +2,12 @@ package com.jhonny.medicationApi.dtos.inputs;
 
 import com.jhonny.medicationApi.domain.enums.TipoAplicacao;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-@Getter @Setter @Builder
+@Getter @Setter @SuperBuilder
 @NoArgsConstructor @AllArgsConstructor
 public class MedicamentoInputDTO {
     protected Long id;

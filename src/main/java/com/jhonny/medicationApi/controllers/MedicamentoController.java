@@ -1,7 +1,7 @@
 package com.jhonny.medicationApi.controllers;
 
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
-import com.jhonny.medicationApi.dtos.inputs.MedicamentoInputDTO;
+import com.jhonny.medicationApi.dtos.inputs.MedicamentoSearchInputDTO;
 import com.jhonny.medicationApi.services.MedicamentoService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,7 +25,7 @@ public class MedicamentoController {
     private MedicamentoService service;
 
     @GetMapping
-    public List<MedicamentoDTO> getWithCriteria(MedicamentoInputDTO dto) {
+    public List<MedicamentoDTO> getWithCriteria(MedicamentoSearchInputDTO dto) {
         return  service.getMedicamentosWithCriteria(dto);
     }
 
@@ -38,7 +37,7 @@ public class MedicamentoController {
 
 
     @PutMapping
-    public MedicamentoDTO update(@RequestBody MedicamentoInputDTO dto) {
+    public MedicamentoDTO update(@RequestBody MedicamentoSearchInputDTO dto) {
         return service.updateMedicamento(dto);
     }
 

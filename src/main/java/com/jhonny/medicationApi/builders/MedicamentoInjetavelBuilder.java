@@ -1,13 +1,11 @@
 package com.jhonny.medicationApi.builders;
 
 import com.jhonny.medicationApi.domain.enums.TipoAplicacao;
-import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.domain.models.MedicamentoInjetavel;
-import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
 import com.jhonny.medicationApi.dtos.MedicamentoInjetavelDTO;
 import com.jhonny.medicationApi.dtos.MedicamentoSobPrescricaoDTO;
-import com.jhonny.medicationApi.dtos.inputs.MedicamentoInputDTO;
+import com.jhonny.medicationApi.dtos.inputs.MedicamentoSearchInputDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -52,7 +50,7 @@ public class MedicamentoInjetavelBuilder {
         return turnedDTO;
     }
 
-    public MedicamentoInjetavel dtoToEntity(MedicamentoInputDTO dto, MedicamentoInjetavel entity) {
+    public MedicamentoInjetavel dtoToEntity(MedicamentoSearchInputDTO dto, MedicamentoInjetavel entity) {
         entity = MedicamentoInjetavel.builder()
                 .id(entity.getId())
                 .nome(dto.getNome()==null? entity.getNome() : dto.getNome())
