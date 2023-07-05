@@ -3,13 +3,14 @@ package com.jhonny.medicationApi.builders;
 import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
 import com.jhonny.medicationApi.dtos.MedicamentoSobPrescricaoDTO;
+import com.jhonny.medicationApi.dtos.inputs.MedicamentoInputDTO;
 import com.jhonny.medicationApi.dtos.inputs.MedicamentoSearchInputDTO;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MedicamentoSobPrescricaoBuilder{
 
-    public MedicamentoSobPrescricao dtoToEntity(MedicamentoDTO dto) {
+    public MedicamentoSobPrescricao dtoToEntity(MedicamentoInputDTO dto) {
         MedicamentoSobPrescricao turnedEntity = MedicamentoSobPrescricao.builder()
                 .id(dto.getId())
                 .nome(dto.getNome())
@@ -20,7 +21,7 @@ public class MedicamentoSobPrescricaoBuilder{
                 .preco(dto.getPreco())
                 .preco_desconto(dto.getPreco_desconto())
                 .termolabel(dto.getTermolabel())
-                .retencao((dto.getSob_prescricao().getRetencao()))
+                .retencao((dto.getRetencao()))
                 .build();
         return turnedEntity;
     }

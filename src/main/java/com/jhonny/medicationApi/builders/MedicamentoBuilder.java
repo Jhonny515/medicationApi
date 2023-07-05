@@ -2,13 +2,14 @@ package com.jhonny.medicationApi.builders;
 
 import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
+import com.jhonny.medicationApi.dtos.inputs.MedicamentoInputDTO;
 import com.jhonny.medicationApi.dtos.inputs.MedicamentoSearchInputDTO;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MedicamentoBuilder {
 
-    public Medicamento dtoToEntity(MedicamentoDTO dto) {
+    public Medicamento dtoToEntity(MedicamentoInputDTO dto) {
         Medicamento turnedEntity = Medicamento.builder()
                 .id(dto.getId())
                 .nome(dto.getNome())

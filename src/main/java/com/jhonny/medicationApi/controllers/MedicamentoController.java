@@ -1,6 +1,7 @@
 package com.jhonny.medicationApi.controllers;
 
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
+import com.jhonny.medicationApi.dtos.inputs.MedicamentoInputDTO;
 import com.jhonny.medicationApi.dtos.inputs.MedicamentoSearchInputDTO;
 import com.jhonny.medicationApi.services.MedicamentoService;
 import lombok.AllArgsConstructor;
@@ -31,13 +32,13 @@ public class MedicamentoController {
 
 
     @PostMapping
-    public MedicamentoDTO save(@RequestBody MedicamentoDTO dto) {
+    public MedicamentoDTO save(@RequestBody MedicamentoInputDTO dto) {
         return service.saveMedicamento(dto);
     }
 
 
     @PutMapping
-    public MedicamentoDTO update(@RequestBody MedicamentoSearchInputDTO dto) {
+    public MedicamentoDTO update(@RequestBody MedicamentoInputDTO dto) {
         return service.updateMedicamento(dto);
     }
 

@@ -5,13 +5,14 @@ import com.jhonny.medicationApi.domain.models.MedicamentoInjetavel;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
 import com.jhonny.medicationApi.dtos.MedicamentoInjetavelDTO;
 import com.jhonny.medicationApi.dtos.MedicamentoSobPrescricaoDTO;
+import com.jhonny.medicationApi.dtos.inputs.MedicamentoInputDTO;
 import com.jhonny.medicationApi.dtos.inputs.MedicamentoSearchInputDTO;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MedicamentoInjetavelBuilder {
 
-    public MedicamentoInjetavel dtoToEntity(MedicamentoDTO dto) {
+    public MedicamentoInjetavel dtoToEntity(MedicamentoInputDTO dto) {
         MedicamentoInjetavel turnedEntity = MedicamentoInjetavel.builder()
                 .id(dto.getId())
                 .nome(dto.getNome())
@@ -22,8 +23,8 @@ public class MedicamentoInjetavelBuilder {
                 .preco(dto.getPreco())
                 .preco_desconto(dto.getPreco_desconto())
                 .termolabel(dto.getTermolabel())
-                .retencao((dto.getSob_prescricao().getRetencao()))
-                .tipo_aplicacao(TipoAplicacao.valueOf(dto.getSob_prescricao().getInjetavel().getTipoAplicacao()))
+                .retencao((dto.getRetencao()))
+                .tipo_aplicacao(dto.getTipoAplicacao())
                 .build();
         return turnedEntity;
     }

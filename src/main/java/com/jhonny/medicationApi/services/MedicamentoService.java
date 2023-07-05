@@ -10,7 +10,7 @@ import java.util.List;
 @Component @Service
 public interface MedicamentoService {
 
-    MedicamentoDTO saveMedicamento(MedicamentoDTO dto);
+    MedicamentoDTO saveMedicamento(MedicamentoInputDTO dto);
     List<MedicamentoDTO> getMedicamentosWithCriteria(MedicamentoSearchInputDTO dto);
     MedicamentoDTO updateMedicamento(MedicamentoInputDTO dto);
     MedicamentoDTO deleteMedicamento(Long id);

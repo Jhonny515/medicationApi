@@ -9,9 +9,9 @@ import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
 import com.jhonny.medicationApi.dtos.inputs.MedicamentoInputDTO;
 import com.jhonny.medicationApi.dtos.inputs.MedicamentoSearchInputDTO;
-import com.jhonny.medicationApi.infra.repositories.MedicamentoInjetavelRepository;
-import com.jhonny.medicationApi.infra.repositories.MedicamentoRepository;
-import com.jhonny.medicationApi.infra.repositories.MedicamentoSobPrescricaoRepository;
+import com.jhonny.medicationApi.repositories.repositories.MedicamentoInjetavelRepository;
+import com.jhonny.medicationApi.repositories.repositories.MedicamentoRepository;
+import com.jhonny.medicationApi.repositories.repositories.MedicamentoSobPrescricaoRepository;
 import com.jhonny.medicationApi.services.MedicamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,13 +39,13 @@ public class MedicamentoServiceImpl implements MedicamentoService {
 
 
     @Override
-    public MedicamentoDTO saveMedicamento(MedicamentoDTO dto) {
+    public MedicamentoDTO saveMedicamento(MedicamentoInputDTO dto) {
             dto.setId(null);
 
-            if (Objects.nonNull(dto.getSob_prescricao()) && Objects.nonNull(dto.getSob_prescricao().getInjetavel())) {
+            if (Objects.nonNull(dto.getInjetavel()) && dto.getInjetavel()) {
                 MedicamentoInjetavel responseEntity = medicamentoInjetavelRepository.save( medicamentoInjetavelBuilder.dtoToEntity(dto));
                 return medicamentoInjetavelBuilder.entityToDto(responseEntity);
-            } else if (Objects.nonNull(dto.getSob_prescricao())) {
+            } else if (Objects.nonNull(dto.getSobPrescricao()) && dto.getSobPrescricao()) {
                 MedicamentoSobPrescricao responseEntity = medicamentoSobPrescricaoRepository.save( medicamentoSobPrescricaoBuilder.dtoToEntity(dto));
                 return medicamentoSobPrescricaoBuilder.entityToDto(responseEntity);
             } else {
