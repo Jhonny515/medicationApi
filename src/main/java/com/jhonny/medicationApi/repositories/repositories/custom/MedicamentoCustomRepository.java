@@ -1,4 +1,4 @@
-package com.jhonny.medicationApi.infra.repositories.custom;
+package com.jhonny.medicationApi.repositories.repositories.custom;
 
 import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.dtos.inputs.MedicamentoSearchInputDTO;

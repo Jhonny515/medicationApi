@@ -1,4 +1,4 @@
-package com.jhonny.medicationApi.infra.repositories;
+package com.jhonny.medicationApi.repositories.repositories;
 
 import com.jhonny.medicationApi.domain.models.Pedido;
 import org.springframework.data.jpa.repository.JpaRepository;

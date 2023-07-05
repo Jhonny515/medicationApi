@@ -1,12 +1,12 @@
-package com.jhonny.medicationApi.infra.repositories.custom.impl;
+package com.jhonny.medicationApi.repositories.repositories.custom.impl;
 
 
 import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.domain.models.MedicamentoInjetavel;
 import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
 import com.jhonny.medicationApi.dtos.inputs.MedicamentoSearchInputDTO;
-import com.jhonny.medicationApi.infra.repositories.CriteriaParent;
-import com.jhonny.medicationApi.infra.repositories.custom.MedicamentoCustomRepository;
+import com.jhonny.medicationApi.repositories.repositories.CriteriaParent;
+import com.jhonny.medicationApi.repositories.repositories.custom.MedicamentoCustomRepository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;

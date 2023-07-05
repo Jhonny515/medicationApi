@@ -1,4 +1,4 @@
-package com.jhonny.medicationApi.infra.repositories;
+package com.jhonny.medicationApi.repositories.repositories;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
