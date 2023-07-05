@@ -38,6 +38,7 @@ public class MedicamentoInjetavelBuilder {
                 .fabricante(entity.getFabricante())
                 .preco(entity.getPreco())
                 .preco_desconto(entity.getPreco_desconto())
+                .porcentagem_desconto((1 - (entity.getPreco_desconto() / entity.getPreco())) * 100)
                 .termolabel(entity.isTermolabel())
                 .sob_prescricao( new MedicamentoSobPrescricaoDTO().builder()
                         .retencao(entity.isRetencao())
