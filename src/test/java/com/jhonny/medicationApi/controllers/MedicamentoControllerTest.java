@@ -72,9 +72,16 @@ public class MedicamentoControllerTest {
 
     @Test
     public void getWithCriteria_expectInvocationToServiceWithNoExceptions() {
-        when(service.getMedicamentosWithCriteria(medicamentoSearchInputDTO)).thenReturn(Collections.singletonList(new MedicamentoDTO()));
+        when(service.getMedicamentosWithCriteria(any())).thenReturn(Collections.singletonList(new MedicamentoDTO()));
 
-        assertDoesNotThrow(()->service.getMedicamentosWithCriteria(medicamentoSearchInputDTO));
+        System.out.println("Initiating 'MedicamentoControler.getWithCriteria()' method.......");
+        medicamentoController.getWithCriteria(medicamentoSearchInputDTO);
+        System.out.println("'MedicamentoControler.getWithCriteria()' method was initiated.");
+
+        verify(service).getMedicamentosWithCriteria(any());
+        System.out.println("Service Layer was invoked.");
+        verifyNoMoreInteractions(service);
+        System.out.println("Service Layer was only invoked once.");
     }
 
     @Test
@@ -82,8 +89,10 @@ public class MedicamentoControllerTest {
         when(service.saveMedicamento(any()))
                 .thenReturn(new MedicamentoDTO());
 
+        System.out.println("Initiating 'MedicamentoControler.save()' method.......");
         assertDoesNotThrow(()->
-                service.saveMedicamento(medicamentoInputDTO));
+                medicamentoController.save(medicamentoInputDTO));
+        System.out.println("Service Layer was invoked.");
     }
 
     @Test
@@ -91,9 +100,11 @@ public class MedicamentoControllerTest {
         when(service.updateMedicamento(medicamentoInputDTO))
                 .thenReturn(new MedicamentoDTO());
 
+        System.out.println("Initiating 'MedicamentoControler.save()' method.......");
         assertDoesNotThrow(()->
-                service.updateMedicamento(medicamentoInputDTO)
+                medicamentoController.update(medicamentoInputDTO)
         );
+        System.out.println("Service Layer was invoked.");
     }
 
     @Test
@@ -101,7 +112,8 @@ public class MedicamentoControllerTest {
         when(service.deleteMedicamento(any())).thenReturn(new MedicamentoDTO());
 
         assertDoesNotThrow(()->
-                service.deleteMedicamento(1L)
+                medicamentoController.delete(1L)
         );
+        System.out.println("Service Layer was invoked.");
     }
 }
