@@ -3,6 +3,7 @@ package com.jhonny.medicationApi.services;
 import com.jhonny.medicationApi.builders.PedidoBuilder;
 import com.jhonny.medicationApi.domain.models.Pedido;
 import com.jhonny.medicationApi.domain.models.StatusPedido;
+import com.jhonny.medicationApi.dtos.inputs.PedidoSearchInputDTO;
 import com.jhonny.medicationApi.repositories.repositories.PedidoRepository;
 import com.jhonny.medicationApi.repositories.repositories.StatusPedidoRepository;
 import com.jhonny.medicationApi.services.impl.PedidoServiceImpl;
@@ -14,6 +15,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -34,6 +39,7 @@ public class PedidoServiceTest {
 
     Long idCliente;
     Pedido pedido;
+    PedidoSearchInputDTO pedidoSearchInputDTO;
 
     @BeforeEach
     void setUp() {
@@ -42,6 +48,7 @@ public class PedidoServiceTest {
                 .id(1L)
                 .id_cliente(idCliente)
                 .build();
+        pedidoSearchInputDTO = PedidoSearchInputDTO.builder().build();
     }
 
     @Test
@@ -53,7 +60,7 @@ public class PedidoServiceTest {
                 .thenReturn(new StatusPedido(1,null, "teste"));
 
         System.out.println("Initiating method 'createPedido()' at PedidoService.......");
-        Assertions.assertDoesNotThrow(()->service.createPedido(idCliente));
+        assertDoesNotThrow(()->service.createPedido(idCliente));
         System.out.println("method 'createPedido() executed!");
 
         verify(pedidoRepository).save(any());
@@ -64,6 +71,30 @@ public class PedidoServiceTest {
         verifyNoMoreInteractions(statusPedidoRepository);
         System.out.println("StatusPedidoRepository was only invoked once.");
 
+    }
+
+    @Test
+    public void getPedidosWithCriteria_expectNoExceptions() {
+        List<Pedido> pedidoList = new ArrayList<>();
+        when(pedidoRepository.findAllWithCriteria(any()))
+                .thenReturn(pedidoList);
+
+        System.out.println("Initiating method 'getPedidosWithCriteria()' at PedidoService.......");
+
+        // Test for 'NullPointerException'
+        System.out.println("Testing for 'NullPointerException'");
+        assertDoesNotThrow(()->
+                service.getPedidosWithCriteria(pedidoSearchInputDTO)
+        );
+        System.out.println("'getPedidosWithCriteria()' executed with no exceptions");
+
+        // Test for any exception
+        System.out.println("Test for any exception");
+        pedidoList.add(pedido);
+        assertDoesNotThrow(()->
+                service.getPedidosWithCriteria(pedidoSearchInputDTO)
+        );
+        System.out.println("'getPedidosWithCriteria()' executed with no exceptions");
     }
 
 }
