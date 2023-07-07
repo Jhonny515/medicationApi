@@ -3,6 +3,7 @@ package com.jhonny.medicationApi.services.impl;
 import com.jhonny.medicationApi.builders.PedidoBuilder;
 import com.jhonny.medicationApi.domain.models.Pedido;
 import com.jhonny.medicationApi.dtos.PedidoDTO;
+import com.jhonny.medicationApi.dtos.inputs.PedidoSearchInputDTO;
 import com.jhonny.medicationApi.repositories.repositories.PedidoRepository;
 import com.jhonny.medicationApi.repositories.repositories.StatusPedidoRepository;
 import com.jhonny.medicationApi.services.PedidoService;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PedidoServiceImpl implements PedidoService {
@@ -21,13 +23,10 @@ public class PedidoServiceImpl implements PedidoService {
     private PedidoBuilder pedidoBuilder;
 
     @Override
-    public List<PedidoDTO> getAllPedidos() {
-        return null;
-    }
-
-    @Override
-    public PedidoDTO getPedido(Long id) {
-        return null;
+    public List<PedidoDTO> getPedidosWithCriteria(PedidoSearchInputDTO dto) {
+        return pedidoRepository.findAllWithCriteria(dto)
+                .stream().map(pedido -> pedidoBuilder.entityToDto(pedido))
+                .collect(Collectors.toList());
     }
 
     @Override
