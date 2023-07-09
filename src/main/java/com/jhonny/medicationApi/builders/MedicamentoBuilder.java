@@ -57,4 +57,18 @@ public class MedicamentoBuilder {
 
         return entity;
     }
+
+    public Medicamento dtoToEntity(MedicamentoDTO dto) {
+        return Medicamento.builder()
+                .id(dto.getId())
+                .nome(dto.getNome())
+                .principio_ativo(dto.getPrincipio_ativo())
+                .descricao(dto.getDescricao())
+                .marca(dto.getMarca())
+                .fabricante(dto.getFabricante())
+                .preco(dto.getPreco())
+                .preco_desconto(dto.getPreco_desconto())
+                .termolabel(dto.getTermolabel())
+                .build();
+    }
 }

@@ -1,5 +1,6 @@
 package com.jhonny.medicationApi.builders;
 
+import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
 import com.jhonny.medicationApi.dtos.MedicamentoSobPrescricaoDTO;
@@ -60,5 +61,20 @@ public class MedicamentoSobPrescricaoBuilder{
                 .build();
 
         return entity;
+    }
+
+    public Medicamento dtoToEntity(MedicamentoDTO dto) {
+        return MedicamentoSobPrescricao.builder()
+                .id(dto.getId())
+                .nome(dto.getNome())
+                .principio_ativo(dto.getPrincipio_ativo())
+                .descricao(dto.getDescricao())
+                .marca(dto.getMarca())
+                .fabricante(dto.getFabricante())
+                .preco(dto.getPreco())
+                .preco_desconto(dto.getPreco_desconto())
+                .termolabel(dto.getTermolabel())
+                .retencao(dto.getSob_prescricao().getRetencao())
+                .build();
     }
 }

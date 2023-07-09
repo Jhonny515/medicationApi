@@ -1,9 +1,12 @@
 package com.jhonny.medicationApi.builders;
 
+import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.domain.models.MedicamentoInjetavel;
 import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
 import com.jhonny.medicationApi.domain.models.Pedido;
+import com.jhonny.medicationApi.domain.models.StatusPedido;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
+import com.jhonny.medicationApi.dtos.MedicamentoInjetavelDTO;
 import com.jhonny.medicationApi.dtos.PedidoDTO;
 import org.springframework.stereotype.Component;
 
@@ -40,5 +43,37 @@ public class PedidoBuilder {
                         .entityToDto(entity.getStatus()))
                 .medicamentos(medDTOList)
                 .build();
+    }
+
+    public Pedido dtoToEntity(PedidoDTO dto){
+        List<Medicamento> medicamentoList;
+        if (Objects.isNull(dto.getMedicamentos())){ medicamentoList = null;}
+        else {
+            medicamentoList = dto.getMedicamentos()
+                    .stream().map( (medicamento) ->{
+                        if (Objects.nonNull(medicamento.getSob_prescricao())) {
+                            if (Objects.nonNull(medicamento.getSob_prescricao().getInjetavel())) {
+                                return new MedicamentoInjetavelBuilder().dtoToEntity(medicamento);
+                            } else {
+                            return new MedicamentoSobPrescricaoBuilder().dtoToEntity(medicamento);
+                            }
+                        }
+                        else {
+                            return new MedicamentoBuilder().dtoToEntity(medicamento);
+                        }
+                    }).collect(Collectors.toList());
+        }
+
+
+        return Pedido.builder()
+                .id(dto.getId())
+                .id_cliente(dto.getId_cliente())
+                .status(new StatusPedido().builder()
+                        .id(dto.getStatus().getId())
+                        .status(dto.getStatus().getStatus())
+                        .build() )
+                .medicamentos(medicamentoList)
+                .build();
+    }
     }
 }

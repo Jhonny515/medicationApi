@@ -1,7 +1,9 @@
 package com.jhonny.medicationApi.builders;
 
 import com.jhonny.medicationApi.domain.enums.TipoAplicacao;
+import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.domain.models.MedicamentoInjetavel;
+import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
 import com.jhonny.medicationApi.dtos.MedicamentoInjetavelDTO;
 import com.jhonny.medicationApi.dtos.MedicamentoSobPrescricaoDTO;
@@ -68,5 +70,21 @@ public class MedicamentoInjetavelBuilder {
                 .build();
 
         return entity;
+    }
+
+    public Medicamento dtoToEntity(MedicamentoDTO dto) {
+        return MedicamentoInjetavel.builder()
+                .id(dto.getId())
+                .nome(dto.getNome())
+                .principio_ativo(dto.getPrincipio_ativo())
+                .descricao(dto.getDescricao())
+                .marca(dto.getMarca())
+                .fabricante(dto.getFabricante())
+                .preco(dto.getPreco())
+                .preco_desconto(dto.getPreco_desconto())
+                .termolabel(dto.getTermolabel())
+                .retencao(dto.getSob_prescricao().getRetencao())
+                .tipo_aplicacao(TipoAplicacao.valueOf(dto.getSob_prescricao().getInjetavel().getTipoAplicacao()))
+                .build();
     }
 }

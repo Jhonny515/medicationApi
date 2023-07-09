@@ -1,15 +1,19 @@
 package com.jhonny.medicationApi.services.impl;
 
 import com.jhonny.medicationApi.builders.PedidoBuilder;
+import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.domain.models.Pedido;
 import com.jhonny.medicationApi.dtos.PedidoDTO;
 import com.jhonny.medicationApi.dtos.inputs.PedidoSearchInputDTO;
+import com.jhonny.medicationApi.repositories.repositories.MedicamentoRepository;
 import com.jhonny.medicationApi.repositories.repositories.PedidoRepository;
 import com.jhonny.medicationApi.repositories.repositories.StatusPedidoRepository;
 import com.jhonny.medicationApi.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +23,8 @@ public class PedidoServiceImpl implements PedidoService {
     private PedidoRepository pedidoRepository;
     @Autowired
     private StatusPedidoRepository statusPedidoRepository;
+    @Autowired
+    private MedicamentoRepository medicamentoRepository;
     @Autowired
     private PedidoBuilder pedidoBuilder;
 
@@ -37,5 +43,31 @@ public class PedidoServiceImpl implements PedidoService {
                 .build();
 
         return pedidoBuilder.entityToDto(pedidoRepository.save(newPedido));
+    }
+
+    @Override
+    public HttpStatus addItemToCart(Long idCliente, Long idMedicamento) {
+
+        List<Pedido> pedidoList = pedidoRepository.findAllWithCriteria(PedidoSearchInputDTO.builder()
+                        .id_cliente(idCliente)
+                        .id_status(1)
+                .build());
+
+        if (pedidoList.size() == 1) {
+            Pedido pedido = pedidoList.get(0);
+            if (pedido.getMedicamentos().isEmpty()) {
+                pedido.setMedicamentos( new ArrayList<Medicamento>() );
+            }
+            pedido.getMedicamentos().add(medicamentoRepository.getReferenceById(idMedicamento));
+            return HttpStatus.OK;
+        } else if (pedidoList.size() == 0) {
+            Pedido pedido = pedidoBuilder.dtoToEntity(this.createPedido(idCliente));
+            pedido.setMedicamentos( new ArrayList<Medicamento>() );
+        pedido.getMedicamentos().add(medicamentoRepository.getReferenceById(idMedicamento));
+        return HttpStatus.OK;
+        }
+        else {
+            return HttpStatus.CONFLICT;
+        }
     }
 }
