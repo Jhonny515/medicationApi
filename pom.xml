@@ -56,6 +56,13 @@
 		</dependency>
 	</dependencies>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>redgate</id>
+			<url>https://download.red-gate.com/maven/release</url>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -68,6 +75,19 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>9.20.0</version>
+				<configuration>
+					<user>root</user>
+					<password>root</password>
+					<url>jdbc:mysql://localhost:3306</url>
+					<schemas>
+						<schema>medication_api</schema>
+					</schemas>
 				</configuration>
 			</plugin>
 		</plugins>
