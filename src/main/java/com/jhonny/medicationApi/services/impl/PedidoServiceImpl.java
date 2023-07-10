@@ -59,11 +59,13 @@ public class PedidoServiceImpl implements PedidoService {
                 pedido.setMedicamentos( new ArrayList<Medicamento>() );
             }
             pedido.getMedicamentos().add(medicamentoRepository.getReferenceById(idMedicamento));
+            pedidoRepository.save(pedido);
             return HttpStatus.OK;
         } else if (pedidoList.size() == 0) {
             Pedido pedido = pedidoBuilder.dtoToEntity(this.createPedido(idCliente));
             pedido.setMedicamentos( new ArrayList<Medicamento>() );
         pedido.getMedicamentos().add(medicamentoRepository.getReferenceById(idMedicamento));
+        pedidoRepository.save(pedido);
         return HttpStatus.OK;
         }
         else {
