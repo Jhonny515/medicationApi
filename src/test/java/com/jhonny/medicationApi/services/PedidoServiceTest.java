@@ -1,9 +1,13 @@
 package com.jhonny.medicationApi.services;
 
 import com.jhonny.medicationApi.builders.PedidoBuilder;
+import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.domain.models.Pedido;
 import com.jhonny.medicationApi.domain.models.StatusPedido;
+import com.jhonny.medicationApi.dtos.PedidoDTO;
+import com.jhonny.medicationApi.dtos.StatusPedidoDTO;
 import com.jhonny.medicationApi.dtos.inputs.PedidoSearchInputDTO;
+import com.jhonny.medicationApi.repositories.repositories.MedicamentoRepository;
 import com.jhonny.medicationApi.repositories.repositories.PedidoRepository;
 import com.jhonny.medicationApi.repositories.repositories.StatusPedidoRepository;
 import com.jhonny.medicationApi.services.impl.PedidoServiceImpl;
@@ -14,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +39,8 @@ public class PedidoServiceTest {
     private PedidoRepository pedidoRepository;
     @Mock
     private StatusPedidoRepository statusPedidoRepository;
+    @Mock
+    private MedicamentoRepository medicamentoRepository;
     @Mock
     private PedidoBuilder pedidoBuilder;
 
@@ -57,10 +64,10 @@ public class PedidoServiceTest {
                 .thenReturn(pedido);
 
         when(statusPedidoRepository.getReferenceById(any()))
-                .thenReturn(new StatusPedido(1,null, "teste"));
+                .thenReturn(new StatusPedido(1, null, "teste"));
 
         System.out.println("Initiating method 'createPedido()' at PedidoService.......");
-        assertDoesNotThrow(()->service.createPedido(idCliente));
+        assertDoesNotThrow(() -> service.createPedido(idCliente));
         System.out.println("method 'createPedido() executed!");
 
         verify(pedidoRepository).save(any());
@@ -83,7 +90,7 @@ public class PedidoServiceTest {
 
         // Test for 'NullPointerException'
         System.out.println("Testing for 'NullPointerException'");
-        assertDoesNotThrow(()->
+        assertDoesNotThrow(() ->
                 service.getPedidosWithCriteria(pedidoSearchInputDTO)
         );
         System.out.println("'getPedidosWithCriteria()' executed with no exceptions");
@@ -91,10 +98,26 @@ public class PedidoServiceTest {
         // Test for any exception
         System.out.println("Test for any exception");
         pedidoList.add(pedido);
-        assertDoesNotThrow(()->
+        assertDoesNotThrow(() ->
                 service.getPedidosWithCriteria(pedidoSearchInputDTO)
         );
         System.out.println("'getPedidosWithCriteria()' executed with no exceptions");
     }
 
+    @Test
+    public void addItemToCart_expectNoExceptionsWhenTheClientHasNoPedidos() {
+        when(pedidoBuilder.dtoToEntity(any()))
+                .thenReturn(Pedido.builder()
+                        .id_cliente(idCliente)
+                        .id(1L)
+                        .status(StatusPedido.builder().build())
+                        .build());
+        when(medicamentoRepository.getReferenceById(any()))
+                .thenReturn(Medicamento.builder().id(1L).build());
+
+        assertDoesNotThrow(() ->
+                service.addItemToCart(idCliente, 1L)
+        );
+
+    }
 }
