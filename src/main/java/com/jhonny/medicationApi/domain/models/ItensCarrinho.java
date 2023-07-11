@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,4 +26,9 @@ public class ItensCarrinho {
 
     @NotNull
     private int qnt;
+
+    @Column(name = "id_pedido")
+    private Long pedido;
+    @Column(name = "id_medicamento")
+    private Long medicamento;
 }
