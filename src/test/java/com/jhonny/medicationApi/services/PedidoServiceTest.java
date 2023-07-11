@@ -1,12 +1,14 @@
 package com.jhonny.medicationApi.services;
 
 import com.jhonny.medicationApi.builders.PedidoBuilder;
+import com.jhonny.medicationApi.domain.models.ItensCarrinho;
 import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.domain.models.Pedido;
 import com.jhonny.medicationApi.domain.models.StatusPedido;
 import com.jhonny.medicationApi.dtos.PedidoDTO;
 import com.jhonny.medicationApi.dtos.StatusPedidoDTO;
 import com.jhonny.medicationApi.dtos.inputs.PedidoSearchInputDTO;
+import com.jhonny.medicationApi.repositories.repositories.ItensCarrinhoRepository;
 import com.jhonny.medicationApi.repositories.repositories.MedicamentoRepository;
 import com.jhonny.medicationApi.repositories.repositories.PedidoRepository;
 import com.jhonny.medicationApi.repositories.repositories.StatusPedidoRepository;
@@ -22,9 +24,13 @@ import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -41,6 +47,8 @@ public class PedidoServiceTest {
     private StatusPedidoRepository statusPedidoRepository;
     @Mock
     private MedicamentoRepository medicamentoRepository;
+    @Mock
+    private ItensCarrinhoRepository itensCarrinhoRepository;
     @Mock
     private PedidoBuilder pedidoBuilder;
 
@@ -106,6 +114,11 @@ public class PedidoServiceTest {
 
     @Test
     public void addItemToCart_expectNoExceptionsWhenTheClientHasNoPedidos() {
+        List<ItensCarrinho> mockedList = new ArrayList<>();
+        mockedList.add(ItensCarrinho.builder()
+                        .id(1L).pedido(1L).medicamento(1L).qnt(1)
+                .build());
+
         when(pedidoBuilder.dtoToEntity(any()))
                 .thenReturn(Pedido.builder()
                         .id_cliente(idCliente)
@@ -114,9 +127,10 @@ public class PedidoServiceTest {
                         .build());
         when(medicamentoRepository.getReferenceById(any()))
                 .thenReturn(Medicamento.builder().id(1L).build());
+        when(itensCarrinhoRepository.findAll()).thenReturn(mockedList);
 
         assertDoesNotThrow(() ->
-                service.addItemToCart(idCliente, 1L)
+                service.addItemToCart(idCliente, 1L, 1)
         );
 
     }
