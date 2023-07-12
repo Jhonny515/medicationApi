@@ -25,14 +25,10 @@ import org.springframework.http.HttpStatus;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -57,6 +53,8 @@ public class PedidoServiceTest {
     Long idCliente;
     Pedido pedido;
     PedidoSearchInputDTO pedidoSearchInputDTO;
+    Medicamento medicamento;
+    List<Medicamento> mockedMedicamentoList;
     List<ItensCarrinho> mockedItensList;
     List<Pedido> mockedPedidosList;
 
@@ -68,7 +66,9 @@ public class PedidoServiceTest {
                 .id_cliente(idCliente)
                 .build();
         pedidoSearchInputDTO = PedidoSearchInputDTO.builder().build();
+        medicamento = Medicamento.builder().id(1L).build();
 
+        mockedMedicamentoList = new ArrayList<>();
         mockedItensList = new ArrayList<>();
         mockedPedidosList = new ArrayList<>();
     }
@@ -159,5 +159,21 @@ public class PedidoServiceTest {
         System.out.println("Expected quantity on mockedItemCarrinho: 3");
         System.out.println("Actual quantity on mockedItemCarrinho: " + mockedItensList.get(0).getQnt());
 
+    }
+
+    @Test
+    public void deleteItemFromCart_expectNoExceptionsAndMedicamentoDeletedFromPedido() {
+        mockedMedicamentoList.add(medicamento);
+        pedido.setMedicamentos(mockedMedicamentoList);
+        mockedPedidosList.add(pedido);
+
+        when(pedidoRepository.findAllWithCriteria(any())).thenReturn(mockedPedidosList);
+
+        System.out.println("Initiating method 'deleteItemFromCart()' at PedidoService.......");
+        assertDoesNotThrow(()->service.deleteItemFromCart(idCliente,1L));
+        System.out.println("Method was executed with no exceptions.");
+
+        assertThat(mockedMedicamentoList.isEmpty());
+        System.out.println("Medicamento was deleted from Pedido.");
     }
 }
