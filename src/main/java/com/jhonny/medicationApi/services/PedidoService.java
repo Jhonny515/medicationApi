@@ -14,4 +14,5 @@ public interface PedidoService {
     List<PedidoDTO> getPedidosWithCriteria(PedidoSearchInputDTO dto);
     PedidoDTO createPedido(Long idCliente);
     HttpStatus addItemToCart(Long idCliente, Long idMedicamento, int qnt);
+    HttpStatus alterItemQtd(Long idCliente, Long idMedicamento, int qtd);
 }

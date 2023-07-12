@@ -95,4 +95,21 @@ public class PedidoServiceImpl implements PedidoService {
             return HttpStatus.CONFLICT;
         }
     }
+
+    @Override
+    public HttpStatus alterItemQtd(Long idCliente, Long idMedicamento, int qtd) {
+        List<Pedido> pedidoList = pedidoRepository.findAllWithCriteria(PedidoSearchInputDTO.builder()
+                .id_cliente(idCliente)
+                .id_status(1)
+                .build());
+
+        if (pedidoList.size() == 1) {
+            Pedido pedido = pedidoList.get(0);
+            this.setItemQtd(pedido.getId(), idMedicamento, qtd);
+            return HttpStatus.OK;
+        }
+        else {
+            return HttpStatus.CONFLICT;
+        }
+    }
 }
