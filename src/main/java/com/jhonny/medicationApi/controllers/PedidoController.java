@@ -23,22 +23,22 @@ public class PedidoController {
     @Autowired
     private PedidoService service;
 
-    @GetMapping(name = "search")
+    @GetMapping("search")
     public List<PedidoDTO> getWithCriteria(PedidoSearchInputDTO pedidoSearchInputDTO) {
         return service.getPedidosWithCriteria(pedidoSearchInputDTO);
     }
 
-    @PostMapping(name = "addToCart")
+    @PostMapping("addToCart")
     public HttpStatus addItem(@RequestParam Long idCliente, @RequestParam Long idMedicamento, @RequestParam int qtd) {
         return service.addItemToCart(idCliente, idMedicamento, qtd);
     }
 
-    @PutMapping(name = "alter")
+    @PutMapping("alter")
     public HttpStatus alterItem(@RequestParam Long idCliente, @RequestParam Long idMedicamento, @RequestParam int qtd) {
         return service.alterItemQtd(idCliente, idMedicamento, qtd);
     }
 
-    @DeleteMapping(name = "delete")
+    @DeleteMapping("delete")
     public HttpStatus deleteItem(@RequestParam Long idCliente, @RequestParam Long idMedicamento) {
         return service.deleteItemFromCart(idCliente, idMedicamento);
     }

@@ -12,6 +12,6 @@ import lombok.Setter;
 public class PedidoSearchInputDTO {
     protected Long id;
     protected Long id_cliente;
-    protected int id_status;
+    protected Integer id_status;
     protected String status;
 }

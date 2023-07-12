@@ -25,7 +25,7 @@ public class ItensCarrinho {
     private Long id;
 
     @NotNull
-    private int qnt;
+    private int qnt = 1;
 
     @Column(name = "id_pedido")
     private Long pedido;
