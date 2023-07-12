@@ -13,6 +13,7 @@ import java.util.List;
 public interface PedidoService {
     List<PedidoDTO> getPedidosWithCriteria(PedidoSearchInputDTO dto);
     PedidoDTO createPedido(Long idCliente);
-    HttpStatus addItemToCart(Long idCliente, Long idMedicamento, int qnt);
+    HttpStatus addItemToCart(Long idCliente, Long idMedicamento, int qtd);
     HttpStatus alterItemQtd(Long idCliente, Long idMedicamento, int qtd);
+    HttpStatus deleteItemFromCart(Long idCliente, Long idMedicamento);
 }

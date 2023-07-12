@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -106,6 +107,28 @@ public class PedidoServiceImpl implements PedidoService {
         if (pedidoList.size() == 1) {
             Pedido pedido = pedidoList.get(0);
             this.setItemQtd(pedido.getId(), idMedicamento, qtd);
+            return HttpStatus.OK;
+        }
+        else {
+            return HttpStatus.CONFLICT;
+        }
+    }
+
+    @Override
+    public HttpStatus deleteItemFromCart(Long idCliente, Long idMedicamento) {
+        List<Pedido> pedidoList = pedidoRepository.findAllWithCriteria(PedidoSearchInputDTO.builder()
+                .id_cliente(idCliente)
+                .id_status(1)
+                .build());
+
+        if (pedidoList.size() == 1) {
+            Pedido pedido = pedidoList.get(0);
+            Iterator<Medicamento> pedidoCart = pedido.getMedicamentos().iterator();
+            while (pedidoCart.hasNext()) {
+                Medicamento medicamento = pedidoCart.next();
+                if (Objects.equals(medicamento.getId(), idMedicamento)) { pedidoCart.remove(); }
+            }
+            pedidoRepository.save(pedido);
             return HttpStatus.OK;
         }
         else {
