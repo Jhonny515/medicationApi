@@ -24,8 +24,10 @@ import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -55,6 +57,8 @@ public class PedidoServiceTest {
     Long idCliente;
     Pedido pedido;
     PedidoSearchInputDTO pedidoSearchInputDTO;
+    List<ItensCarrinho> mockedItensList;
+    List<Pedido> mockedPedidosList;
 
     @BeforeEach
     void setUp() {
@@ -64,6 +68,9 @@ public class PedidoServiceTest {
                 .id_cliente(idCliente)
                 .build();
         pedidoSearchInputDTO = PedidoSearchInputDTO.builder().build();
+
+        mockedItensList = new ArrayList<>();
+        mockedPedidosList = new ArrayList<>();
     }
 
     @Test
@@ -114,8 +121,7 @@ public class PedidoServiceTest {
 
     @Test
     public void addItemToCart_expectNoExceptionsWhenTheClientHasNoPedidos() {
-        List<ItensCarrinho> mockedList = new ArrayList<>();
-        mockedList.add(ItensCarrinho.builder()
+        mockedItensList.add(ItensCarrinho.builder()
                         .id(1L).pedido(1L).medicamento(1L).qnt(1)
                 .build());
 
@@ -127,11 +133,31 @@ public class PedidoServiceTest {
                         .build());
         when(medicamentoRepository.getReferenceById(any()))
                 .thenReturn(Medicamento.builder().id(1L).build());
-        when(itensCarrinhoRepository.findAll()).thenReturn(mockedList);
+        when(itensCarrinhoRepository.findAll()).thenReturn(mockedItensList);
 
         assertDoesNotThrow(() ->
                 service.addItemToCart(idCliente, 1L, 1)
         );
+
+    }
+
+    @Test
+    public void alterItemQtd_expectNoExceptionsAndIncreaseTheItemQtd() {
+        mockedItensList.add(ItensCarrinho.builder()
+                .id(1L).pedido(1L).medicamento(1L).qnt(1)
+                .build());
+        mockedPedidosList.add(pedido);
+
+        when(pedidoRepository.findAllWithCriteria(any())).thenReturn(mockedPedidosList);
+        when(itensCarrinhoRepository.findAll()).thenReturn(mockedItensList);
+
+        System.out.println("Initiating method 'alterItemQtd()' at PedidoService.......");
+        assertDoesNotThrow(()->service.alterItemQtd(idCliente, 1L, 3));
+        System.out.println("Method was executed with no exceptions.");
+
+        assertThat(Objects.equals(mockedItensList.get(0).getQnt(), 3));
+        System.out.println("Expected quantity on mockedItemCarrinho: 3");
+        System.out.println("Actual quantity on mockedItemCarrinho: " + mockedItensList.get(0).getQnt());
 
     }
 }
