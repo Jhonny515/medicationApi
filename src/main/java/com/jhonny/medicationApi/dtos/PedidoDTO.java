@@ -14,5 +14,5 @@ public class PedidoDTO {
     protected Long id;
     protected Long id_cliente;
     protected StatusPedidoDTO status;
-    protected List<MedicamentoDTO> medicamentos;
+    protected List<MedicamentoPedidoDTO> medicamentos;
 }

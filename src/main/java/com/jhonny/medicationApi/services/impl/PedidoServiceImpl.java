@@ -37,7 +37,10 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public List<PedidoDTO> getPedidosWithCriteria(PedidoSearchInputDTO dto) {
         return pedidoRepository.findAllWithCriteria(dto)
-                .stream().map(pedido -> pedidoBuilder.entityToDto(pedido))
+                .stream().map(pedido -> {
+                    List<ItensCarrinho> itensCarrinho = itensCarrinhoRepository.findByPedido(pedido.getId());
+                    return pedidoBuilder.entityToDto(pedido, itensCarrinho);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -48,7 +51,9 @@ public class PedidoServiceImpl implements PedidoService {
                 .status(statusPedidoRepository.getReferenceById(1))
                 .build();
 
-        return pedidoBuilder.entityToDto(pedidoRepository.save(newPedido));
+        Pedido createdPedido = pedidoRepository.save(newPedido);
+
+        return pedidoBuilder.entityToDto(createdPedido, itensCarrinhoRepository.findByPedido(createdPedido.getId()));
     }
 
     public HttpStatus setItemQtd(Long idPedido, Long idMedicamento, int qnt) {

@@ -1,5 +1,6 @@
 package com.jhonny.medicationApi.builders;
 
+import com.jhonny.medicationApi.domain.models.ItensCarrinho;
 import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.domain.models.MedicamentoInjetavel;
 import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
@@ -7,6 +8,7 @@ import com.jhonny.medicationApi.domain.models.Pedido;
 import com.jhonny.medicationApi.domain.models.StatusPedido;
 import com.jhonny.medicationApi.dtos.MedicamentoDTO;
 import com.jhonny.medicationApi.dtos.MedicamentoInjetavelDTO;
+import com.jhonny.medicationApi.dtos.MedicamentoPedidoDTO;
 import com.jhonny.medicationApi.dtos.PedidoDTO;
 import org.springframework.stereotype.Component;
 
@@ -17,21 +19,26 @@ import java.util.stream.Collectors;
 @Component
 public class PedidoBuilder {
 
-    public PedidoDTO entityToDto(Pedido entity) {
-        List<MedicamentoDTO> medDTOList;
+    public PedidoDTO entityToDto(Pedido entity, List<ItensCarrinho> itensCarrinho) {
+        List<MedicamentoPedidoDTO> medDTOList;
         if (Objects.isNull(entity.getMedicamentos())){ medDTOList = null;}
         else {
             medDTOList = entity.getMedicamentos()
                     .stream().map( (medicamento) ->{
+                        ItensCarrinho medicamentoqnt = itensCarrinho.stream().filter(item -> Objects.equals(item.getMedicamento(), medicamento.getId())).findFirst().orElseThrow();
+                        MedicamentoPedidoDTO medicamentoPedidoDTO;
+                        MedicamentoDTO medicamentoDTO;
                         if (medicamento instanceof MedicamentoInjetavel) {
-                            return new MedicamentoInjetavelBuilder().entityToDto((MedicamentoInjetavel) medicamento);
+                            medicamentoDTO = new MedicamentoInjetavelBuilder().entityToDto((MedicamentoInjetavel) medicamento);
                         }
-                        if (medicamento instanceof MedicamentoSobPrescricao) {
-                            return new MedicamentoSobPrescricaoBuilder().entityToDto((MedicamentoSobPrescricao) medicamento);
+                        else if (medicamento instanceof MedicamentoSobPrescricao) {
+                            medicamentoDTO = new MedicamentoSobPrescricaoBuilder().entityToDto((MedicamentoSobPrescricao) medicamento);
                         }
                         else {
-                            return new MedicamentoBuilder().entityToDto(medicamento);
+                            medicamentoDTO = (MedicamentoPedidoDTO) new MedicamentoBuilder().entityToDto(medicamento);
                         }
+                        medicamentoPedidoDTO = new MedicamentoPedidoDTO(medicamentoDTO, medicamentoqnt.getQnt());
+                        return medicamentoPedidoDTO;
                     }).collect(Collectors.toList());
         }
 
