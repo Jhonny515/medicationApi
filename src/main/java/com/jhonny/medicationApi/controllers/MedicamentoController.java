@@ -1,9 +1,9 @@
 package com.jhonny.medicationApi.controllers;
 
-import com.jhonny.medicationApi.dtos.MedicamentoDTO;
-import com.jhonny.medicationApi.dtos.inputs.MedicamentoInputDTO;
-import com.jhonny.medicationApi.dtos.inputs.MedicamentoSearchInputDTO;
-import com.jhonny.medicationApi.services.MedicamentoService;
+import com.jhonny.medicationApi.domain.dtos.MedicamentoDTO;
+import com.jhonny.medicationApi.domain.dtos.inputs.MedicamentoInputDTO;
+import com.jhonny.medicationApi.domain.dtos.inputs.MedicamentoSearchInputDTO;
+import com.jhonny.medicationApi.infra.services.MedicamentoService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;

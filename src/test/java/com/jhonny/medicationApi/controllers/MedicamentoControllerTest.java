@@ -1,10 +1,10 @@
 package com.jhonny.medicationApi.controllers;
 
 import com.jhonny.medicationApi.domain.enums.TipoAplicacao;
-import com.jhonny.medicationApi.dtos.MedicamentoDTO;
-import com.jhonny.medicationApi.dtos.inputs.MedicamentoInputDTO;
-import com.jhonny.medicationApi.dtos.inputs.MedicamentoSearchInputDTO;
-import com.jhonny.medicationApi.services.MedicamentoService;
+import com.jhonny.medicationApi.domain.dtos.MedicamentoDTO;
+import com.jhonny.medicationApi.domain.dtos.inputs.MedicamentoInputDTO;
+import com.jhonny.medicationApi.domain.dtos.inputs.MedicamentoSearchInputDTO;
+import com.jhonny.medicationApi.infra.services.MedicamentoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

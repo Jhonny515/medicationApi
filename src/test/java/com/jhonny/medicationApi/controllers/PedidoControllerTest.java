@@ -1,9 +1,8 @@
 package com.jhonny.medicationApi.controllers;
 
-import com.jhonny.medicationApi.dtos.MedicamentoDTO;
-import com.jhonny.medicationApi.dtos.PedidoDTO;
-import com.jhonny.medicationApi.dtos.inputs.PedidoSearchInputDTO;
-import com.jhonny.medicationApi.services.PedidoService;
+import com.jhonny.medicationApi.domain.dtos.PedidoDTO;
+import com.jhonny.medicationApi.domain.dtos.inputs.PedidoSearchInputDTO;
+import com.jhonny.medicationApi.infra.services.PedidoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,8 +1,8 @@
 package com.jhonny.medicationApi.controllers;
 
-import com.jhonny.medicationApi.dtos.PedidoDTO;
-import com.jhonny.medicationApi.dtos.inputs.PedidoSearchInputDTO;
-import com.jhonny.medicationApi.services.PedidoService;
+import com.jhonny.medicationApi.domain.dtos.PedidoDTO;
+import com.jhonny.medicationApi.domain.dtos.inputs.PedidoSearchInputDTO;
+import com.jhonny.medicationApi.infra.services.PedidoService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

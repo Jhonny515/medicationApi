@@ -1,26 +1,22 @@
 package com.jhonny.medicationApi.services;
 
-import com.jhonny.medicationApi.builders.PedidoBuilder;
+import com.jhonny.medicationApi.domain.builders.PedidoBuilder;
 import com.jhonny.medicationApi.domain.models.ItensCarrinho;
 import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.domain.models.Pedido;
 import com.jhonny.medicationApi.domain.models.StatusPedido;
-import com.jhonny.medicationApi.dtos.PedidoDTO;
-import com.jhonny.medicationApi.dtos.StatusPedidoDTO;
-import com.jhonny.medicationApi.dtos.inputs.PedidoSearchInputDTO;
-import com.jhonny.medicationApi.repositories.repositories.ItensCarrinhoRepository;
-import com.jhonny.medicationApi.repositories.repositories.MedicamentoRepository;
-import com.jhonny.medicationApi.repositories.repositories.PedidoRepository;
-import com.jhonny.medicationApi.repositories.repositories.StatusPedidoRepository;
-import com.jhonny.medicationApi.services.impl.PedidoServiceImpl;
-import org.junit.jupiter.api.Assertions;
+import com.jhonny.medicationApi.domain.dtos.inputs.PedidoSearchInputDTO;
+import com.jhonny.medicationApi.infra.repositories.ItensCarrinhoRepository;
+import com.jhonny.medicationApi.infra.repositories.MedicamentoRepository;
+import com.jhonny.medicationApi.infra.repositories.PedidoRepository;
+import com.jhonny.medicationApi.infra.repositories.StatusPedidoRepository;
+import com.jhonny.medicationApi.infra.services.impl.PedidoServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;

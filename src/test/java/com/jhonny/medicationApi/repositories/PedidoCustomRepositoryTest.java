@@ -1,19 +1,12 @@
 package com.jhonny.medicationApi.repositories;
 
-import com.jhonny.medicationApi.dtos.inputs.PedidoSearchInputDTO;
-import com.jhonny.medicationApi.repositories.repositories.CriteriaParent;
-import com.jhonny.medicationApi.repositories.repositories.PedidoRepository;
-import com.jhonny.medicationApi.repositories.repositories.custom.PedidoCustomRepository;
-import com.jhonny.medicationApi.repositories.repositories.custom.impl.PedidoCustomRepositoryImpl;
+import com.jhonny.medicationApi.domain.dtos.inputs.PedidoSearchInputDTO;
+import com.jhonny.medicationApi.infra.repositories.PedidoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.persistence.PersistenceContext;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
