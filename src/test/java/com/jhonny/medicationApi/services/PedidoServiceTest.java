@@ -63,7 +63,7 @@ public class PedidoServiceTest {
                 .id(1L)
                 .id_cliente(idCliente)
                 .build();
-        pedidoSearchInputDTO = PedidoSearchInputDTO.builder().build();
+        pedidoSearchInputDTO = PedidoSearchInputDTO.builder().id(1L).build();
         medicamento = Medicamento.builder().id(1L).build();
 
         mockedMedicamentoList = new ArrayList<>();
@@ -124,6 +124,7 @@ public class PedidoServiceTest {
                         .id(1L).pedido(1L).medicamento(1L).qnt(1)
                 .build());
 
+        when(pedidoRepository.save(any())).thenReturn(Pedido.builder().id(1L).build());
         when(pedidoBuilder.dtoToEntity(any()))
                 .thenReturn(Pedido.builder()
                         .id_cliente(idCliente)
@@ -135,7 +136,7 @@ public class PedidoServiceTest {
         when(itensCarrinhoRepository.findAll()).thenReturn(mockedItensList);
 
         assertDoesNotThrow(() ->
-                service.addItemToCart(idCliente, 1L, 1)
+                service.addItemToCart(idCliente, 1L)
         );
 
     }
