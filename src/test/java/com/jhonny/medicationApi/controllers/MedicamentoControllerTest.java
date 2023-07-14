@@ -59,8 +59,6 @@ public class MedicamentoControllerTest {
                 .descricao("Medicamento qualquer")
                 .marca("ACME")
                 .fabricante("ACME")
-                .preco(10.15)
-                .preco_desconto(10.15)
                 .sobPrescricao(true)
                 .retencao(false)
                 .injetavel(true)
@@ -102,12 +100,12 @@ public class MedicamentoControllerTest {
 
     @Test
     public void update_expectInvocationToServiceWithNoExceptions() {
-        when(service.updateMedicamento(medicamentoInputDTO))
+        when(service.updateMedicamento(medicamentoInputDTO, 1L))
                 .thenReturn(new MedicamentoDTO());
 
         System.out.println("Initiating 'MedicamentoControler.save()' method.......");
         assertDoesNotThrow(()->
-                medicamentoController.update(medicamentoInputDTO)
+                medicamentoController.update(medicamentoInputDTO, 1L)
         );
         System.out.println("Service Layer was invoked.");
     }

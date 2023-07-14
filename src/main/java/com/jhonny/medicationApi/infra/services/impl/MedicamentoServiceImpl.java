@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -84,24 +85,27 @@ public class MedicamentoServiceImpl implements MedicamentoService {
     }
 
     @Override
-    public MedicamentoDTO updateMedicamento(MedicamentoInputDTO dto) {
+    public MedicamentoDTO updateMedicamento(MedicamentoInputDTO dto, Long id) {
         Medicamento medicamentoToUpdate;
-        if (dto.getId() == null) {
-            System.err.println("ID não pode estar nulo para atualização do medicamento.");
-            return null; // TODO: Tratamento de Exceção
+        if (id == null) {
+            throw new NullPointerException("'id' can not be null for this method.");
         } else {
-            medicamentoToUpdate = medicamentoRepository.findById(dto.getId()).orElseThrow(); // TODO: Tratamento de Exceção
+            medicamentoToUpdate = medicamentoRepository.findById(id).orElseThrow(()->new NoSuchElementException("Medication not found for given id."));
         }
 
-        if ((Objects.nonNull(dto.getInjetavel()) && dto.getInjetavel()) || Objects.nonNull(dto.getTipoAplicacao())) {
-            MedicamentoInjetavel responseEntity = medicamentoInjetavelRepository.save(medicamentoInjetavelBuilder.dtoToEntity((MedicamentoSearchInputDTO) dto, (MedicamentoInjetavel) medicamentoToUpdate));
-            return medicamentoInjetavelBuilder.entityToDto(responseEntity);
-        } else if ((Objects.nonNull(dto.getSobPrescricao()) &&  dto.getSobPrescricao()) || Objects.nonNull(dto.getRetencao())) {
-            MedicamentoSobPrescricao responseEntity = medicamentoSobPrescricaoRepository.save( medicamentoSobPrescricaoBuilder.dtoToEntity((MedicamentoSearchInputDTO) dto, (MedicamentoSobPrescricao) medicamentoToUpdate));
-            return medicamentoSobPrescricaoBuilder.entityToDto(responseEntity);
-        } else {
-            Medicamento responseEntity =  medicamentoRepository.save(medicamentoBuilder.dtoToEntity((MedicamentoSearchInputDTO) dto, medicamentoToUpdate));
-            return medicamentoBuilder.entityToDto(responseEntity);
+        try {
+            if ((Objects.nonNull(dto.getInjetavel()) && dto.getInjetavel()) || Objects.nonNull(dto.getTipoAplicacao())) {
+                MedicamentoInjetavel responseEntity = medicamentoInjetavelRepository.save(medicamentoInjetavelBuilder.dtoToEntity((MedicamentoSearchInputDTO) dto, (MedicamentoInjetavel) medicamentoToUpdate));
+                return medicamentoInjetavelBuilder.entityToDto(responseEntity);
+            } else if ((Objects.nonNull(dto.getSobPrescricao()) && dto.getSobPrescricao()) || Objects.nonNull(dto.getRetencao())) {
+                MedicamentoSobPrescricao responseEntity = medicamentoSobPrescricaoRepository.save(medicamentoSobPrescricaoBuilder.dtoToEntity((MedicamentoSearchInputDTO) dto, (MedicamentoSobPrescricao) medicamentoToUpdate));
+                return medicamentoSobPrescricaoBuilder.entityToDto(responseEntity);
+            } else {
+                Medicamento responseEntity = medicamentoRepository.save(medicamentoBuilder.dtoToEntity((MedicamentoSearchInputDTO) dto, medicamentoToUpdate));
+                return medicamentoBuilder.entityToDto(responseEntity);
+            }
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Invalid or null data provided.");
         }
     }
 

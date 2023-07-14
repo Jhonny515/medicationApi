@@ -13,6 +13,6 @@ public interface MedicamentoService {
 
     MedicamentoDTO saveMedicamento(MedicamentoInputDTO dto);
     Page<MedicamentoDTO> getMedicamentosWithCriteria(MedicamentoSearchInputDTO dto);
-    MedicamentoDTO updateMedicamento(MedicamentoInputDTO dto);
+    MedicamentoDTO updateMedicamento(MedicamentoInputDTO dto, Long id);
     MedicamentoDTO deleteMedicamento(Long id);
 }
