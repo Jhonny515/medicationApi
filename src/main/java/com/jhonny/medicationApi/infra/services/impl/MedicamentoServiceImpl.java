@@ -47,15 +47,19 @@ public class MedicamentoServiceImpl implements MedicamentoService {
     public MedicamentoDTO saveMedicamento(MedicamentoInputDTO dto) {
             dto.setId(null);
 
+        try {
             if (Objects.nonNull(dto.getInjetavel()) && dto.getInjetavel()) {
-                MedicamentoInjetavel responseEntity = medicamentoInjetavelRepository.save( medicamentoInjetavelBuilder.dtoToEntity(dto));
+                MedicamentoInjetavel responseEntity = medicamentoInjetavelRepository.save(medicamentoInjetavelBuilder.dtoToEntity(dto));
                 return medicamentoInjetavelBuilder.entityToDto(responseEntity);
             } else if (Objects.nonNull(dto.getSobPrescricao()) && dto.getSobPrescricao()) {
-                MedicamentoSobPrescricao responseEntity = medicamentoSobPrescricaoRepository.save( medicamentoSobPrescricaoBuilder.dtoToEntity(dto));
+                MedicamentoSobPrescricao responseEntity = medicamentoSobPrescricaoRepository.save(medicamentoSobPrescricaoBuilder.dtoToEntity(dto));
                 return medicamentoSobPrescricaoBuilder.entityToDto(responseEntity);
             } else {
-                Medicamento responseEntity =  medicamentoRepository.save(medicamentoBuilder.dtoToEntity(dto));
+                Medicamento responseEntity = medicamentoRepository.save(medicamentoBuilder.dtoToEntity(dto));
                 return medicamentoBuilder.entityToDto(responseEntity);
+            }
+        } catch (NullPointerException e) {
+            throw new NullPointerException("Required field set as null.");
         }
     }
 
@@ -111,7 +115,7 @@ public class MedicamentoServiceImpl implements MedicamentoService {
 
     @Override
     public MedicamentoDTO deleteMedicamento(Long id) {
-        Medicamento medicamentoToDelete = medicamentoRepository.findById(id).orElseThrow();
+        Medicamento medicamentoToDelete = medicamentoRepository.findById(id).orElseThrow(()->new NoSuchElementException("Medication not found for given id."));
         medicamentoRepository.deleteById(id);
         if (medicamentoToDelete instanceof MedicamentoInjetavel) {
             return medicamentoInjetavelBuilder.entityToDto((MedicamentoInjetavel) medicamentoToDelete);
