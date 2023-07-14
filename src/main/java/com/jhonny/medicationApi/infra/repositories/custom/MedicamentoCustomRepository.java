@@ -9,4 +9,5 @@ import java.util.List;
 public interface MedicamentoCustomRepository {
 
     List<Medicamento> findAllWithCriteria(MedicamentoSearchInputDTO dto, Pageable pageable);
+    Integer resultsCount(MedicamentoSearchInputDTO dto);
 }

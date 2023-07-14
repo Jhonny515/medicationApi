@@ -76,8 +76,9 @@ public class MedicamentoServiceImpl implements MedicamentoService {
                         return medicamentoBuilder.entityToDto(medicamento);
                     }
                 }).collect(Collectors.toList());
+        Integer responseSize = medicamentoRepository.resultsCount(dto);
 
-        Page<MedicamentoDTO> pageResult = new PageImpl<>(responseDTO, pageable, responseDTO.size());
+        Page<MedicamentoDTO> pageResult = new PageImpl<>(responseDTO, pageable, responseSize);
 
         return pageResult;
     }
