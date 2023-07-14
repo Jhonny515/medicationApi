@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
@@ -65,14 +66,18 @@ public class MedicamentoControllerTest {
                 .injetavel(true)
                 .tipoAplicacao(TipoAplicacao.SUBCUTANEA)
                 .termolabel(true)
-                .orderBy("nome")
+                .sortBy("nome")
                 .order("asc")
                 .build();
     }
 
     @Test
     public void getWithCriteria_expectInvocationToServiceWithNoExceptions() {
-        when(service.getMedicamentosWithCriteria(any())).thenReturn(Collections.singletonList(new MedicamentoDTO()));
+        when(service.getMedicamentosWithCriteria(any())).thenReturn(new PageImpl<>(
+                Collections.singletonList(
+                    new MedicamentoDTO()
+                )
+        ));
 
         System.out.println("Initiating 'MedicamentoControler.getWithCriteria()' method.......");
         medicamentoController.getWithCriteria(medicamentoSearchInputDTO);

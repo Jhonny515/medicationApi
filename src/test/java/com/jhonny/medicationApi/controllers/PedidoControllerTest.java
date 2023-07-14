@@ -35,13 +35,13 @@ public class PedidoControllerTest {
 
     @Test
     public void getWithCriteria_expectInvokeServiceWithNoExceptions() {
-        when(pedidoService.getPedidosWithCriteria(any())).thenReturn(Collections.singletonList(new PedidoDTO()));
+        when(pedidoService.getPedidosWithCriteria(any(), any())).thenReturn(Collections.singletonList(new PedidoDTO()));
 
         System.out.println("Initiating 'PedidoControler.getWithCriteria()' method.......");
-        controller.getWithCriteria(pedidoSearchInputDTO);
+        controller.getWithCriteria(pedidoSearchInputDTO, null);
         System.out.println("'PedidoControler.getWithCriteria()' method was initiated.");
 
-        verify(pedidoService).getPedidosWithCriteria(any());
+        verify(pedidoService).getPedidosWithCriteria(any(), any());
         System.out.println("Service Layer was invoked.");
         verifyNoMoreInteractions(pedidoService);
         System.out.println("Service Layer was only invoked once.");

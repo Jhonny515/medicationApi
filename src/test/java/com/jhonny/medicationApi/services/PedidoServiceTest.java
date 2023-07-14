@@ -17,6 +17,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,8 +95,9 @@ public class PedidoServiceTest {
 
     @Test
     public void getPedidosWithCriteria_expectNoExceptions() {
+        Pageable pageable = PageRequest.of(0, 15);
         List<Pedido> pedidoList = new ArrayList<>();
-        when(pedidoRepository.findAllWithCriteria(any()))
+        when(pedidoRepository.findAllWithCriteria(any(), any()))
                 .thenReturn(pedidoList);
 
         System.out.println("Initiating method 'getPedidosWithCriteria()' at PedidoService.......");
@@ -102,7 +105,7 @@ public class PedidoServiceTest {
         // Test for 'NullPointerException'
         System.out.println("Testing for 'NullPointerException'");
         assertDoesNotThrow(() ->
-                service.getPedidosWithCriteria(pedidoSearchInputDTO)
+                service.getPedidosWithCriteria(pedidoSearchInputDTO, pageable)
         );
         System.out.println("'getPedidosWithCriteria()' executed with no exceptions");
 
@@ -110,7 +113,7 @@ public class PedidoServiceTest {
         System.out.println("Test for any exception");
         pedidoList.add(pedido);
         assertDoesNotThrow(() ->
-                service.getPedidosWithCriteria(pedidoSearchInputDTO)
+                service.getPedidosWithCriteria(pedidoSearchInputDTO, pageable)
         );
         System.out.println("'getPedidosWithCriteria()' executed with no exceptions");
     }
@@ -144,7 +147,7 @@ public class PedidoServiceTest {
                 .build());
         mockedPedidosList.add(pedido);
 
-        when(pedidoRepository.findAllWithCriteria(any())).thenReturn(mockedPedidosList);
+        when(pedidoRepository.findAllWithCriteria(any(), any())).thenReturn(mockedPedidosList);
         when(itensCarrinhoRepository.findAll()).thenReturn(mockedItensList);
 
         System.out.println("Initiating method 'alterItemQtd()' at PedidoService.......");
@@ -163,7 +166,7 @@ public class PedidoServiceTest {
         pedido.setMedicamentos(mockedMedicamentoList);
         mockedPedidosList.add(pedido);
 
-        when(pedidoRepository.findAllWithCriteria(any())).thenReturn(mockedPedidosList);
+        when(pedidoRepository.findAllWithCriteria(any(), any())).thenReturn(mockedPedidosList);
 
         System.out.println("Initiating method 'deleteItemFromCart()' at PedidoService.......");
         assertDoesNotThrow(()->service.deleteItemFromCart(idCliente,1L));
