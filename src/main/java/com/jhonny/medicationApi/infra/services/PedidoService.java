@@ -8,12 +8,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component @Service
 public interface PedidoService {
     List<PedidoDTO> getPedidosWithCriteria(PedidoSearchInputDTO dto, Pageable pageable);
     PedidoDTO createPedido(Long idCliente);
-    HttpStatus addItemToCart(Long idCliente, Long idMedicamento, int qtd);
-    HttpStatus alterItemQtd(Long idCliente, Long idMedicamento, int qtd);
-    HttpStatus deleteItemFromCart(Long idCliente, Long idMedicamento);
+    Long addItemToCart(Long idCliente, Long idMedicamento);
+    Long alterItemQtd(Long idCliente, Long idMedicamento, int qtd);
+    Long deleteItemFromCart(Long idCliente, Long idMedicamento);
 }

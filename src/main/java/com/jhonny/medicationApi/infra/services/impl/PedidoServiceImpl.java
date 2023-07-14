@@ -17,10 +17,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,7 +62,7 @@ public class PedidoServiceImpl implements PedidoService {
         return pedidoBuilder.entityToDto(createdPedido, itensCarrinhoRepository.findByPedido(createdPedido.getId()));
     }
 
-    public HttpStatus setItemQtd(Long idPedido, Long idMedicamento, int qnt) {
+    public void setItemQtd(Long idPedido, Long idMedicamento, int qnt) {
         ItensCarrinho item = itensCarrinhoRepository.findAll()
                 .stream().reduce((medicamento, nextItem) -> {
                     if (Objects.equals(medicamento.getPedido(), idPedido) &&
@@ -67,15 +71,14 @@ public class PedidoServiceImpl implements PedidoService {
                     } else {
                         return nextItem;
                     }
-                }).orElseThrow();
+                }).orElseThrow(()->new NoSuchElementException("Medication not found on this cart."));
         item.setQnt(qnt);
         itensCarrinhoRepository.save(item);
 
-        return HttpStatus.OK;
     }
 
     @Override
-    public HttpStatus addItemToCart(Long idCliente, Long idMedicamento, int qtd) {
+    public Long addItemToCart(Long idCliente, Long idMedicamento) {
         Pageable pageable = PageRequest.of(0, 2);
 
         List<Pedido> pedidoList = pedidoRepository.findAllWithCriteria(PedidoSearchInputDTO.builder()
@@ -83,30 +86,42 @@ public class PedidoServiceImpl implements PedidoService {
                         .id_status(1)
                 .build(), pageable);
 
+        Medicamento medicamentoToAdd;
+        try {
+            medicamentoToAdd = medicamentoRepository.getReferenceById(idMedicamento);
+        } catch (EntityNotFoundException ex) {
+            throw new EntityNotFoundException("Unable to find Medicamento with id " + idMedicamento.toString());
+        }
+
+        Long pedidoId = null;
         if (pedidoList.size() == 1) {
             Pedido pedido = pedidoList.get(0);
             if (pedido.getMedicamentos().isEmpty()) {
                 pedido.setMedicamentos( new ArrayList<Medicamento>() );
             }
-            pedido.getMedicamentos().add(medicamentoRepository.getReferenceById(idMedicamento));
-            pedidoRepository.save(pedido);
-            this.setItemQtd(pedido.getId(), idMedicamento, qtd);
-            return HttpStatus.OK;
+            if (!pedido.getMedicamentos().isEmpty() && pedido.getMedicamentos().contains(medicamentoToAdd)){
+                this.setItemQtd(pedido.getId(), idMedicamento, (+1));
+            } else {
+                pedido.getMedicamentos().add(medicamentoToAdd);
+                pedidoRepository.save(pedido);
+                this.setItemQtd(pedido.getId(), idMedicamento, 1);
+                pedidoId = pedido.getId();
+            }
         } else if (pedidoList.size() == 0) {
             Pedido pedido = pedidoBuilder.dtoToEntity(this.createPedido(idCliente));
             pedido.setMedicamentos( new ArrayList<Medicamento>() );
-            pedido.getMedicamentos().add(medicamentoRepository.getReferenceById(idMedicamento));
+            pedido.getMedicamentos().add(medicamentoToAdd);
             pedidoRepository.save(pedido);
-            this.setItemQtd(pedido.getId(), idMedicamento, qtd);
-            return HttpStatus.OK;
+            this.setItemQtd(pedido.getId(), idMedicamento, 1);
+            pedidoId = pedido.getId();
         }
         else {
-            return HttpStatus.CONFLICT;
+            throw new RuntimeException("Internal Error");
         }
+        return pedidoId;
     }
 
-    @Override
-    public HttpStatus alterItemQtd(Long idCliente, Long idMedicamento, int qtd) {
+    public Long alterItemQtd(Long idCliente, Long idMedicamento, int qtd) {
         Pageable pageable = PageRequest.of(0, 2);
 
         List<Pedido> pedidoList = pedidoRepository.findAllWithCriteria(PedidoSearchInputDTO.builder()
@@ -114,18 +129,20 @@ public class PedidoServiceImpl implements PedidoService {
                 .id_status(1)
                 .build(), pageable);
 
+        Long pedidoId = null;
         if (pedidoList.size() == 1) {
             Pedido pedido = pedidoList.get(0);
             this.setItemQtd(pedido.getId(), idMedicamento, qtd);
-            return HttpStatus.OK;
+            pedidoId = pedido.getId();
         }
         else {
-            return HttpStatus.CONFLICT;
+            throw new RuntimeException("Internal Error");
         }
+        return pedidoId;
     }
 
     @Override
-    public HttpStatus deleteItemFromCart(Long idCliente, Long idMedicamento) {
+    public Long deleteItemFromCart(Long idCliente, Long idMedicamento) {
         Pageable pageable = PageRequest.of(0, 2);
 
         List<Pedido> pedidoList = pedidoRepository.findAllWithCriteria(PedidoSearchInputDTO.builder()
@@ -133,6 +150,7 @@ public class PedidoServiceImpl implements PedidoService {
                 .id_status(1)
                 .build(), pageable);
 
+        Long pedidoId;
         if (pedidoList.size() == 1) {
             Pedido pedido = pedidoList.get(0);
             Iterator<Medicamento> pedidoCart = pedido.getMedicamentos().iterator();
@@ -141,10 +159,11 @@ public class PedidoServiceImpl implements PedidoService {
                 if (Objects.equals(medicamento.getId(), idMedicamento)) { pedidoCart.remove(); }
             }
             pedidoRepository.save(pedido);
-            return HttpStatus.OK;
+            pedidoId = pedido.getId();
         }
         else {
-            return HttpStatus.CONFLICT;
+            throw new RuntimeException("Internal Error");
         }
+        return pedidoId;
     }
 }
