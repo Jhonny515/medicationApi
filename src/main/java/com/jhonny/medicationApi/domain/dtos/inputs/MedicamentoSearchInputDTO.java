@@ -9,8 +9,10 @@ import lombok.experimental.SuperBuilder;
 @Getter @Setter @SuperBuilder
 @NoArgsConstructor @AllArgsConstructor
 public class MedicamentoSearchInputDTO extends MedicamentoInputDTO {
-    protected String orderBy;
+    protected String sortBy;
     protected String order;
+    protected Integer page;
+    protected Integer size;
     protected Double higherThan;
     protected Double lowerThan;
 }

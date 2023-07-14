@@ -4,8 +4,16 @@ import com.jhonny.medicationApi.domain.dtos.MedicamentoDTO;
 import com.jhonny.medicationApi.domain.dtos.inputs.MedicamentoInputDTO;
 import com.jhonny.medicationApi.domain.dtos.inputs.MedicamentoSearchInputDTO;
 import com.jhonny.medicationApi.infra.services.MedicamentoService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.AllArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,9 +33,12 @@ public class MedicamentoController {
     @Autowired
     private MedicamentoService service;
 
+    @Operation(summary = "Returns a list of medicines, filtering and sorting by zero or more criterias.")
     @GetMapping
-    public List<MedicamentoDTO> getWithCriteria(MedicamentoSearchInputDTO dto) {
-        return  service.getMedicamentosWithCriteria(dto);
+    public ResponseEntity<Page<MedicamentoDTO>> getWithCriteria(@ParameterObject MedicamentoSearchInputDTO dto) {
+          Page<MedicamentoDTO> results = service.getMedicamentosWithCriteria(dto);
+
+          return ResponseEntity.status(HttpStatus.OK).body(results);
     }
 
 

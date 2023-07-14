@@ -7,6 +7,7 @@ import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
 import com.jhonny.medicationApi.domain.dtos.inputs.MedicamentoSearchInputDTO;
 import com.jhonny.medicationApi.infra.repositories.CriteriaParent;
 import com.jhonny.medicationApi.infra.repositories.custom.MedicamentoCustomRepository;
+import org.springframework.data.domain.Pageable;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -20,8 +21,8 @@ public class MedicamentoCustomRepositoryImpl extends CriteriaParent<Medicamento,
 
 
     @Override
-    public List<Medicamento> findAllWithCriteria(MedicamentoSearchInputDTO dto) {
-        return super.findAllWithCriteriaParent(dto);
+    public List<Medicamento> findAllWithCriteria(MedicamentoSearchInputDTO dto, Pageable pageable) {
+        return super.findAllWithCriteriaParent(dto, pageable);
     }
 
     @Override
@@ -83,11 +84,15 @@ public class MedicamentoCustomRepositoryImpl extends CriteriaParent<Medicamento,
 
             // Sorting
 
-            if (Objects.nonNull(paramDTO.getOrderBy()) && Objects.nonNull(paramDTO.getOrder())) {
+            if (Objects.nonNull(paramDTO.getSortBy()) && Objects.nonNull(paramDTO.getOrder())) {
                 query.orderBy(
                         paramDTO.getOrder().toLowerCase().equals("asc") ?
-                                cb.asc(root.get(paramDTO.getOrderBy())) :
-                                cb.desc(root.get(paramDTO.getOrderBy()))
+                                cb.asc(root.get(paramDTO.getSortBy())) :
+                                cb.desc(root.get(paramDTO.getSortBy()))
+                );
+            } else if (Objects.nonNull(paramDTO.getSortBy()) && Objects.isNull(paramDTO.getOrder())) {
+                query.orderBy(
+                        cb.asc(root.get(paramDTO.getSortBy()))
                 );
             }
             if (Objects.nonNull(paramDTO.getHigherThan())) {

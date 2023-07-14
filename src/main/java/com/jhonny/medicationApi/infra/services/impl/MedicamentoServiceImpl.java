@@ -14,6 +14,10 @@ import com.jhonny.medicationApi.infra.repositories.MedicamentoRepository;
 import com.jhonny.medicationApi.infra.repositories.MedicamentoSobPrescricaoRepository;
 import com.jhonny.medicationApi.infra.services.MedicamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,8 +59,12 @@ public class MedicamentoServiceImpl implements MedicamentoService {
     }
 
     @Override
-    public List<MedicamentoDTO> getMedicamentosWithCriteria(MedicamentoSearchInputDTO dto) {
-        List<MedicamentoDTO> responseDTO = medicamentoRepository.findAllWithCriteria(dto)
+    public Page<MedicamentoDTO> getMedicamentosWithCriteria(MedicamentoSearchInputDTO dto) {
+        Pageable pageable = PageRequest.of(
+                Objects.isNull(dto.getPage())? 0 : dto.getPage(),
+                Objects.isNull(dto.getSize())? 15 : dto.getSize()
+        );
+        List<MedicamentoDTO> responseDTO = medicamentoRepository.findAllWithCriteria(dto, pageable)
                 .stream().map((medicamento) -> {
                     if (medicamento instanceof MedicamentoInjetavel) {
                         return medicamentoInjetavelBuilder.entityToDto((MedicamentoInjetavel) medicamento);
@@ -69,8 +77,9 @@ public class MedicamentoServiceImpl implements MedicamentoService {
                     }
                 }).collect(Collectors.toList());
 
+        Page<MedicamentoDTO> pageResult = new PageImpl<>(responseDTO, pageable, responseDTO.size());
 
-        return responseDTO;
+        return pageResult;
     }
 
     @Override

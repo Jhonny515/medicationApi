@@ -1,5 +1,7 @@
 package com.jhonny.medicationApi.infra.repositories;
 
+import org.springframework.data.domain.Pageable;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -15,7 +17,7 @@ public abstract class CriteriaParent<E, D> {
     @PersistenceContext
     EntityManager em;
 
-    public List<E> findAllWithCriteriaParent(D paramDTO) {
+    public List<E> findAllWithCriteriaParent(D paramDTO, Pageable pageable) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         final ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
@@ -30,7 +32,10 @@ public abstract class CriteriaParent<E, D> {
         if(!predicates.isEmpty()) {
             query.where(predicates.toArray(Predicate[]::new));
         }
-        TypedQuery<E> queryResult = em.createQuery(query);
+        TypedQuery<E> queryResult = em.createQuery(query)
+                .setMaxResults(pageable.getPageSize())
+                .setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
+
         return queryResult.getResultList();
     }
 
