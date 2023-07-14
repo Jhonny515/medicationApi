@@ -78,6 +78,32 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
+    public PedidoDTO checkoutPedido(Long idCliente) {
+        Pageable pageable = PageRequest.of(0, 2);
+        Pedido pedidoCheckedout;
+
+        List<Pedido> pedidoList = pedidoRepository.findAllWithCriteria(PedidoSearchInputDTO.builder()
+                .id_cliente(idCliente)
+                .id_status(1)
+                .build(), pageable);
+
+        if (pedidoList.size() == 1) {
+            Pedido pedido = pedidoList.get(0);
+            pedido.setStatus(statusPedidoRepository.getReferenceById(2));
+            pedidoCheckedout = pedidoRepository.save(pedido);
+
+        } else if (pedidoList.size() == 0) {
+            throw new EntityNotFoundException("No Pedidos to checkout.");
+        }
+        else {
+            throw new RuntimeException("Internal Error");
+        }
+        return pedidoBuilder.entityToDto(
+                pedidoCheckedout,
+                itensCarrinhoRepository.findByPedido(pedidoCheckedout.getId()));
+    }
+
+    @Override
     public Long addItemToCart(Long idCliente, Long idMedicamento) {
         Pageable pageable = PageRequest.of(0, 2);
 

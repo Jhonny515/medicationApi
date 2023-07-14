@@ -17,4 +17,5 @@ public interface PedidoService {
     Long addItemToCart(Long idCliente, Long idMedicamento);
     Long alterItemQtd(Long idCliente, Long idMedicamento, int qtd);
     Long deleteItemFromCart(Long idCliente, Long idMedicamento);
+    PedidoDTO checkoutPedido(Long idCliente);
 }
