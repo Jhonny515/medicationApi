@@ -12,6 +12,8 @@ import com.jhonny.medicationApi.infra.repositories.PedidoRepository;
 import com.jhonny.medicationApi.infra.repositories.StatusPedidoRepository;
 import com.jhonny.medicationApi.infra.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +37,8 @@ public class PedidoServiceImpl implements PedidoService {
     private PedidoBuilder pedidoBuilder;
 
     @Override
-    public List<PedidoDTO> getPedidosWithCriteria(PedidoSearchInputDTO dto) {
-        return pedidoRepository.findAllWithCriteria(dto)
+    public List<PedidoDTO> getPedidosWithCriteria(PedidoSearchInputDTO dto, Pageable pageable) {
+        return pedidoRepository.findAllWithCriteria(dto, pageable)
                 .stream().map(pedido -> {
                     List<ItensCarrinho> itensCarrinho = itensCarrinhoRepository.findByPedido(pedido.getId());
                     return pedidoBuilder.entityToDto(pedido, itensCarrinho);
@@ -74,11 +76,12 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public HttpStatus addItemToCart(Long idCliente, Long idMedicamento, int qtd) {
+        Pageable pageable = PageRequest.of(0, 2);
 
         List<Pedido> pedidoList = pedidoRepository.findAllWithCriteria(PedidoSearchInputDTO.builder()
                         .id_cliente(idCliente)
                         .id_status(1)
-                .build());
+                .build(), pageable);
 
         if (pedidoList.size() == 1) {
             Pedido pedido = pedidoList.get(0);
@@ -104,10 +107,12 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public HttpStatus alterItemQtd(Long idCliente, Long idMedicamento, int qtd) {
+        Pageable pageable = PageRequest.of(0, 2);
+
         List<Pedido> pedidoList = pedidoRepository.findAllWithCriteria(PedidoSearchInputDTO.builder()
                 .id_cliente(idCliente)
                 .id_status(1)
-                .build());
+                .build(), pageable);
 
         if (pedidoList.size() == 1) {
             Pedido pedido = pedidoList.get(0);
@@ -121,10 +126,12 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public HttpStatus deleteItemFromCart(Long idCliente, Long idMedicamento) {
+        Pageable pageable = PageRequest.of(0, 2);
+
         List<Pedido> pedidoList = pedidoRepository.findAllWithCriteria(PedidoSearchInputDTO.builder()
                 .id_cliente(idCliente)
                 .id_status(1)
-                .build());
+                .build(), pageable);
 
         if (pedidoList.size() == 1) {
             Pedido pedido = pedidoList.get(0);

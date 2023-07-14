@@ -4,8 +4,12 @@ import com.jhonny.medicationApi.domain.dtos.PedidoDTO;
 import com.jhonny.medicationApi.domain.dtos.inputs.PedidoSearchInputDTO;
 import com.jhonny.medicationApi.infra.services.PedidoService;
 import lombok.AllArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,8 +28,8 @@ public class PedidoController {
     private PedidoService service;
 
     @GetMapping("search")
-    public List<PedidoDTO> getWithCriteria(PedidoSearchInputDTO pedidoSearchInputDTO) {
-        return service.getPedidosWithCriteria(pedidoSearchInputDTO);
+    public ResponseEntity<List<PedidoDTO>> getWithCriteria(@ParameterObject PedidoSearchInputDTO pedidoSearchInputDTO, @ParameterObject @PageableDefault(size = 15) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getPedidosWithCriteria(pedidoSearchInputDTO, pageable));
     }
 
     @PostMapping("addToCart")

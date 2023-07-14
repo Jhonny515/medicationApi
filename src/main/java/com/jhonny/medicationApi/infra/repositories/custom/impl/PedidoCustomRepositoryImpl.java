@@ -4,6 +4,7 @@ import com.jhonny.medicationApi.domain.models.Pedido;
 import com.jhonny.medicationApi.domain.dtos.inputs.PedidoSearchInputDTO;
 import com.jhonny.medicationApi.infra.repositories.CriteriaParent;
 import com.jhonny.medicationApi.infra.repositories.custom.PedidoCustomRepository;
+import org.springframework.data.domain.Pageable;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -15,8 +16,8 @@ import java.util.Objects;
 public class PedidoCustomRepositoryImpl extends CriteriaParent<Pedido, PedidoSearchInputDTO>
 implements PedidoCustomRepository {
     @Override
-    public List<Pedido> findAllWithCriteria(PedidoSearchInputDTO dto){
-        return super.findAllWithCriteriaParent(dto);
+    public List<Pedido> findAllWithCriteria(PedidoSearchInputDTO dto, Pageable pageable){
+        return super.findAllWithCriteriaParent(dto, pageable);
     }
 
     @Override
