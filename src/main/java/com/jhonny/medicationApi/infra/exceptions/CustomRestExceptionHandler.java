@@ -12,6 +12,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.persistence.EntityNotFoundException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -84,6 +85,30 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ NullPointerException.class })
     public ResponseEntity<Object> handleNullPointer(
             NullPointerException ex,
+            WebRequest request
+    ) {
+        ApiError apiError =
+                new ApiError(new Timestamp(new Date().getTime()), HttpStatus.BAD_REQUEST, ex.getMessage(), ((ServletWebRequest)request).getRequest().getRequestURI());
+        return new ResponseEntity<>(
+                apiError, new HttpHeaders(), apiError.getStatus()
+        );
+    }
+
+    @ExceptionHandler({ RuntimeException.class })
+    public ResponseEntity<Object> handleRuntime(
+            RuntimeException ex,
+            WebRequest request
+    ) {
+        ApiError apiError =
+                new ApiError(new Timestamp(new Date().getTime()), HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ((ServletWebRequest)request).getRequest().getRequestURI());
+        return new ResponseEntity<>(
+                apiError, new HttpHeaders(), apiError.getStatus()
+        );
+    }
+
+    @ExceptionHandler({ EntityNotFoundException.class })
+    public ResponseEntity<Object> handleEntityNotFound(
+            EntityNotFoundException ex,
             WebRequest request
     ) {
         ApiError apiError =
