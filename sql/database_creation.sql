@@ -1,0 +1,1 @@
+create database medication_api;
