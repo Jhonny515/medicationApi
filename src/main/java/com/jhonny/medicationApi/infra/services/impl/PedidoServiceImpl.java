@@ -154,7 +154,7 @@ public class PedidoServiceImpl implements PedidoService {
                 .id_status(1)
                 .build(), pageable);
 
-        Long pedidoId = null;
+        Long pedidoId;
         if (pedidoList.size() == 1) {
             Pedido pedido = pedidoList.get(0);
             this.setItemQtd(pedido.getId(), idMedicamento, qtd);

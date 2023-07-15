@@ -6,7 +6,6 @@ import com.jhonny.medicationApi.infra.services.PedidoService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springdoc.api.annotations.ParameterObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
