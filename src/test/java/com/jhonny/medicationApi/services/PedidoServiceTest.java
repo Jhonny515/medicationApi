@@ -155,7 +155,7 @@ public class PedidoServiceTest {
         assertDoesNotThrow(()->service.alterItemQtd(idCliente, 1L, 3));
         System.out.println("Method was executed with no exceptions.");
 
-        assertThat(Objects.equals(mockedItensList.get(0).getQnt(), 3));
+        assertThat(mockedItensList.get(0).getQnt()).isEqualTo(3);
         System.out.println("Expected quantity on mockedItemCarrinho: 3");
         System.out.println("Actual quantity on mockedItemCarrinho: " + mockedItensList.get(0).getQnt());
 
@@ -173,7 +173,7 @@ public class PedidoServiceTest {
         assertDoesNotThrow(()->service.deleteItemFromCart(idCliente,1L));
         System.out.println("Method was executed with no exceptions.");
 
-        assertThat(mockedMedicamentoList.isEmpty());
+        assertThat(mockedMedicamentoList.isEmpty()).isEqualTo(true);
         System.out.println("Medicamento was deleted from Pedido.");
     }
 }
