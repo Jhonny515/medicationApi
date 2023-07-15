@@ -3,17 +3,18 @@ package com.jhonny.medicationApi.infra.services.impl;
 import com.jhonny.medicationApi.domain.builders.MedicamentoBuilder;
 import com.jhonny.medicationApi.domain.builders.MedicamentoInjetavelBuilder;
 import com.jhonny.medicationApi.domain.builders.MedicamentoSobPrescricaoBuilder;
-import com.jhonny.medicationApi.domain.models.Medicamento;
-import com.jhonny.medicationApi.domain.models.MedicamentoInjetavel;
-import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
 import com.jhonny.medicationApi.domain.dtos.MedicamentoDTO;
 import com.jhonny.medicationApi.domain.dtos.inputs.MedicamentoInputDTO;
 import com.jhonny.medicationApi.domain.dtos.inputs.MedicamentoSearchInputDTO;
+import com.jhonny.medicationApi.domain.models.Medicamento;
+import com.jhonny.medicationApi.domain.models.MedicamentoInjetavel;
+import com.jhonny.medicationApi.domain.models.MedicamentoSobPrescricao;
 import com.jhonny.medicationApi.infra.repositories.MedicamentoInjetavelRepository;
 import com.jhonny.medicationApi.infra.repositories.MedicamentoRepository;
 import com.jhonny.medicationApi.infra.repositories.MedicamentoSobPrescricaoRepository;
 import com.jhonny.medicationApi.infra.services.MedicamentoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -26,20 +27,21 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class MedicamentoServiceImpl implements MedicamentoService {
 
-    @Autowired
+    @NonNull
     MedicamentoBuilder medicamentoBuilder;
-    @Autowired
+    @NonNull
     MedicamentoInjetavelBuilder medicamentoInjetavelBuilder;
-    @Autowired
+    @NonNull
     MedicamentoSobPrescricaoBuilder medicamentoSobPrescricaoBuilder;
 
-    @Autowired
+    @NonNull
     MedicamentoRepository medicamentoRepository;
-    @Autowired
+    @NonNull
     MedicamentoSobPrescricaoRepository medicamentoSobPrescricaoRepository;
-    @Autowired
+    @NonNull
     MedicamentoInjetavelRepository medicamentoInjetavelRepository;
 
 

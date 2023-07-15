@@ -1,43 +1,42 @@
 package com.jhonny.medicationApi.infra.services.impl;
 
 import com.jhonny.medicationApi.domain.builders.PedidoBuilder;
+import com.jhonny.medicationApi.domain.dtos.PedidoDTO;
+import com.jhonny.medicationApi.domain.dtos.inputs.PedidoSearchInputDTO;
 import com.jhonny.medicationApi.domain.models.ItensCarrinho;
 import com.jhonny.medicationApi.domain.models.Medicamento;
 import com.jhonny.medicationApi.domain.models.Pedido;
-import com.jhonny.medicationApi.domain.dtos.PedidoDTO;
-import com.jhonny.medicationApi.domain.dtos.inputs.PedidoSearchInputDTO;
 import com.jhonny.medicationApi.infra.repositories.ItensCarrinhoRepository;
 import com.jhonny.medicationApi.infra.repositories.MedicamentoRepository;
 import com.jhonny.medicationApi.infra.repositories.PedidoRepository;
 import com.jhonny.medicationApi.infra.repositories.StatusPedidoRepository;
 import com.jhonny.medicationApi.infra.services.PedidoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PedidoServiceImpl implements PedidoService {
-    @Autowired
+    @NonNull
     private PedidoRepository pedidoRepository;
-    @Autowired
+    @NonNull
     private StatusPedidoRepository statusPedidoRepository;
-    @Autowired
+    @NonNull
     private MedicamentoRepository medicamentoRepository;
-    @Autowired
+    @NonNull
     private ItensCarrinhoRepository itensCarrinhoRepository;
-    @Autowired
+    @NonNull
     private PedidoBuilder pedidoBuilder;
 
     @Override

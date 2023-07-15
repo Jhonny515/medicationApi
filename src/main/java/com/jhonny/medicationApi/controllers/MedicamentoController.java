@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,7 +35,7 @@ import java.util.NoSuchElementException;
 @RequestMapping("medicamentos")
 public class MedicamentoController {
 
-    @Autowired
+    @NonNull
     private MedicamentoService service;
 
     @Operation(summary = "Returns a list of medicines, filtering and sorting by zero or more criterias.")

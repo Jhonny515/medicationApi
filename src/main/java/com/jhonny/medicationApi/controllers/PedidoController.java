@@ -4,6 +4,7 @@ import com.jhonny.medicationApi.domain.dtos.PedidoDTO;
 import com.jhonny.medicationApi.domain.dtos.inputs.PedidoSearchInputDTO;
 import com.jhonny.medicationApi.infra.services.PedidoService;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +28,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("pedidos")
 public class PedidoController {
-    @Autowired
+    @NonNull
     private PedidoService service;
 
     @GetMapping("search")
