@@ -8,6 +8,7 @@ import lombok.NonNull;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +41,7 @@ public class PedidoController {
     public ResponseEntity addItem(@RequestParam Long idCliente, @RequestParam Long idMedicamento, UriComponentsBuilder uriBuilder) {
         Long idPedido = service.addItemToCart(idCliente, idMedicamento);
         URI uri = uriBuilder.path("/pedidos/search?id={id}").buildAndExpand(idPedido).toUri();
-        return ResponseEntity.created(uri).body(idPedido);
+        return ResponseEntity.created(uri).body("Item added");
     }
 
     @PutMapping("alter")
@@ -48,7 +49,7 @@ public class PedidoController {
     public ResponseEntity alterItem(@RequestParam Long idCliente, @RequestParam Long idMedicamento, @RequestParam int qtd, UriComponentsBuilder uriBuilder) {
         Long idPedido = service.alterItemQtd(idCliente, idMedicamento, qtd);
         URI uri = uriBuilder.path("/pedidos/search?id={id}").buildAndExpand(idPedido).toUri();
-        return ResponseEntity.created(uri).body(idPedido);
+        return ResponseEntity.created(uri).body("Item quantity altered");
     }
 
     @DeleteMapping("delete")
@@ -56,7 +57,10 @@ public class PedidoController {
     public ResponseEntity deleteItem(@RequestParam Long idCliente, @RequestParam Long idMedicamento, UriComponentsBuilder uriBuilder) {
         Long idPedido = service.deleteItemFromCart(idCliente, idMedicamento);
         URI uri = uriBuilder.path("/pedidos/search?id={id}").buildAndExpand(idPedido).toUri();
-        return ResponseEntity.created(uri).body(idPedido);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setLocation(uri);
+        responseHeaders.set("status", "DELETED");
+        return ResponseEntity.status(HttpStatus.OK).headers(responseHeaders).body("Item deleted");
     }
 
     @PutMapping("checkout")
