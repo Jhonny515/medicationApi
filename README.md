@@ -27,6 +27,8 @@ Demo project for Resilia's revision course, for Quero Ser Dev program. This appl
 ## How to Execute
 
 
+Before running the project, you must create the database for this project on your MySQL instance. The database must be named `medication_api`. A *.sql* file for the creation of the database can be found at the source: `./sql/database_creation.sql`
+
 To execute the project, you will need an *integrated development environment (IDE)* and a compiler. The IDE I used for this project was **IntelliJ Community Edition**. For best compatibility, use the compiler **Maven**, as specified on the [Project Specification](#project-specification).
 <br>
 The *main class* of this project has the name **"MedicationApiApplication"**.
