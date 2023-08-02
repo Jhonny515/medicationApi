@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.jhonny</groupId>
 	<artifactId>medication</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>medicationService</name>
 	<description>Demo project for Resilia&apos;s revision course, for Quero Ser Dev program. This application is a Rest API that serves the list of medicines of a pharmacy and the orders made by clients.</description>
 	<properties>

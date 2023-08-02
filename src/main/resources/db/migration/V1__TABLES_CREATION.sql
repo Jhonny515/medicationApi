@@ -33,7 +33,7 @@ CREATE TABLE `tb_status_pedido` (
 -- Novos status podem ser adicionados --'
 );
 
-CREATE TABLE `tb_carrinho` (
+CREATE TABLE `tb_itens_carrinho` (
   `id` bigint PRIMARY KEY NOT NULL,
   `id_pedido` bigint NOT NULL,
   `id_medicamento` bigint NOT NULL,
@@ -48,6 +48,6 @@ ALTER TABLE `tb_med_sob_prescricao` ADD FOREIGN KEY (`id_medicamento`) REFERENCE
 
 ALTER TABLE `tb_pedido` ADD FOREIGN KEY (`id_status`) REFERENCES `tb_status_pedido` (`id`);
 
-ALTER TABLE `tb_carrinho` ADD FOREIGN KEY (`id_pedido`) REFERENCES `tb_pedido` (`id`);
+ALTER TABLE `tb_itens_carrinho` ADD FOREIGN KEY (`id_pedido`) REFERENCES `tb_pedido` (`id`);
 
-ALTER TABLE `tb_carrinho` ADD FOREIGN KEY (`id_medicamento`) REFERENCES `tb_medicamento` (`id`);
+ALTER TABLE `tb_itens_carrinho` ADD FOREIGN KEY (`id_medicamento`) REFERENCES `tb_medicamento` (`id`);

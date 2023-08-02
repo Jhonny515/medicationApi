@@ -97,7 +97,7 @@ public class PedidoControllerTest {
         controller.checkout(1L);
         System.out.println("'PedidoControler.checkout()' method was initiated.");
 
-        verify(pedidoService).deleteItemFromCart(any(Long.class),any(Long.class));
+        verify(pedidoService).checkoutPedido(any(Long.class));
         System.out.println("Service Layer was invoked.");
         verifyNoMoreInteractions(pedidoService);
         System.out.println("Service Layer was only invoked once.");
